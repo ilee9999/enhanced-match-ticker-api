@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
+	monitoring="autodetect" dynamicConfig="true">
+	
+	<diskStore path="java.io.tmpdir" />
+	
+	<cache name="findByCodeData" maxEntriesLocalHeap="5000"
+		maxEntriesLocalDisk="1000" eternal="false" timeToLiveSeconds="10800"
+		overflowToDisk="true" maxElementsOnDisk="1000"
+		memoryStoreEvictionPolicy="LRU" />
+
+	<cache name="iosVersionCheck" maxEntriesLocalHeap="5000"
+		maxEntriesLocalDisk="1000" eternal="false" timeToLiveSeconds="3600"
+		overflowToDisk="true" maxElementsOnDisk="1000"
+		memoryStoreEvictionPolicy="LRU" />
+	
+	<cache name="androidVersioniCheck" maxEntriesLocalHeap="5000"
+		maxEntriesLocalDisk="1000" eternal="false" timeToLiveSeconds="3600"
+		overflowToDisk="true" maxElementsOnDisk="1000"
+		memoryStoreEvictionPolicy="LRU" />
+		
+	<cache name="matchSupport" maxEntriesLocalHeap="5000"
+		maxEntriesLocalDisk="1000" eternal="false" timeToLiveSeconds="60"
+		overflowToDisk="true" maxElementsOnDisk="1000"
+		memoryStoreEvictionPolicy="LRU" />
+		
+	<cache name="getTouramentList" maxEntriesLocalHeap="5000"
+		maxEntriesLocalDisk="1000" eternal="false" timeToLiveSeconds="3600"
+		overflowToDisk="true" maxElementsOnDisk="1000"
+		memoryStoreEvictionPolicy="LRU" />
+		
+	<cache name="matchStatistics" maxEntriesLocalHeap="5000"
+		maxEntriesLocalDisk="1000" eternal="false" timeToLiveSeconds="3600"
+		overflowToDisk="true" maxElementsOnDisk="1000"
+		memoryStoreEvictionPolicy="LRU" />
+		
+	<cache name="getRanking" maxEntriesLocalHeap="5000"
+		maxEntriesLocalDisk="1000" eternal="false" timeToLiveSeconds="600"
+		overflowToDisk="true" maxElementsOnDisk="1000"
+		memoryStoreEvictionPolicy="LRU" />
+		
+	<cache name="getLeaguetable" maxEntriesLocalHeap="5000"
+		maxEntriesLocalDisk="1000" eternal="false" timeToLiveSeconds="600"
+		overflowToDisk="true" maxElementsOnDisk="1000"
+		memoryStoreEvictionPolicy="LRU" />
+		
+	<cache name="getResult" maxEntriesLocalHeap="5000"
+		maxEntriesLocalDisk="1000" eternal="false" timeToLiveSeconds="600"
+		overflowToDisk="true" maxElementsOnDisk="1000"
+		memoryStoreEvictionPolicy="LRU" />
+		
+	<cache name="getSchedule" maxEntriesLocalHeap="5000"
+		maxEntriesLocalDisk="1000" eternal="false" timeToLiveSeconds="3600"
+		overflowToDisk="true" maxElementsOnDisk="1000"
+		memoryStoreEvictionPolicy="LRU" />
+</ehcache>

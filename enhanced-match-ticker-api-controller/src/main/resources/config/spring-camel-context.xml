@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-4.1.xsd
+    http://camel.apache.org/schema/spring 
+    http://camel.apache.org/schema/spring/camel-spring.xsd">
+    
+	<camel:camelContext id="camelContext">
+		<camel:contextScan />
+	
+		<camel:jmxAgent id="jmxAgent" disabled="true" createConnector="false" />
+		
+		<camel:consumerTemplate id="consumer" camelContextId="camelContext" />
+		<camel:template id="producer" camelContextId="camelContext" />
+	</camel:camelContext>
+
+	<camel:proxy id="invokeMatchSupport" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
+		serviceUrl="activemq:queue:emt.matchSupport?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetRanking" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
+		serviceUrl="activemq:queue:emt.getRanking?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetresult" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
+		serviceUrl="activemq:queue:emt.getresult?${activemq.proxy.param}"/>
+	
+	<camel:proxy id="invokeGetTouramentList" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.TouramentService"
+		serviceUrl="activemq:queue:emt.getTouramentList?${activemq.proxy.param}"/>
+	
+	<camel:proxy id="sysConfigService" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.SysConfigService"
+		serviceUrl="activemq:queue:emt.sysConfigService?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetMatchStatistics" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
+		serviceUrl="activemq:queue:emt.getMatchStatistics?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetSchedule" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
+		serviceUrl="activemq:queue:emt.getSchedule?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetResult" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
+		serviceUrl="activemq:queue:emt.getResult?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetLeaguetable" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
+		serviceUrl="activemq:queue:emt.getLeaguetable?${activemq.proxy.param}"/>
+	
+	<camel:proxy id="invokeSaveSupportTeam" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
+		serviceUrl="activemq:queue:emt.saveSupportTeam?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeUpdateSupportCount" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
+		serviceUrl="activemq:queue:emt.updateSupportCount?${activemq.proxy.param}"/>
+	
+	<camel:proxy id="invokeKeepAlive" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.KeepAliveService"
+		serviceUrl="activemq:queue:emt.keepAlive?${activemq.proxy.param}"/>
+</beans>
