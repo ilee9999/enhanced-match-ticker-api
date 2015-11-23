@@ -1,12 +1,9 @@
 package com.hkesports.matchticker.model;
 
-import java.sql.Blob;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -19,15 +16,25 @@ import com.hkesports.matchticker.model.basic.BasicModel;
 public class TeamMember extends BasicModel {
 	private static final long serialVersionUID = 1L;
 
+	private Tournament tournament;
 	private Team team;
+	private Player player;
 	private String memberName;
 	private String memberFullName;
 	private String memberCountry;
-	private Blob memberIconSmall;
-	private Blob memberIconLarge;
+	private String memberIconSmall;
+	private String memberIconLarge;
 	private String teamURL;
-	private String role;
-	private Short isStarter;
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="tournament_id", columnDefinition="BIGINT(20)", referencedColumnName="id")
+	public Tournament getTournament() {
+		return tournament;
+	}
+
+	public void setTournament(Tournament tournament) {
+		this.tournament = tournament;
+	}
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="team_id", columnDefinition="BIGINT(20)", referencedColumnName="id")
@@ -37,6 +44,16 @@ public class TeamMember extends BasicModel {
 	
 	public void setTeam(Team team) {
 		this.team = team;
+	}
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="player_id", columnDefinition="BIGINT(20)", referencedColumnName="id")
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 	
 	@Column(name="member_name", length=128)
@@ -66,23 +83,21 @@ public class TeamMember extends BasicModel {
 		this.memberCountry = memberCountry;
 	}
 	
-	@Lob
-	@Column(name="member_icon_small", columnDefinition = "BLOB", nullable = true)
-	public Blob getMemberIconSmall() {
+	@Column(name="member_icon_small", length = 10, nullable = true)
+	public String getMemberIconSmall() {
 		return memberIconSmall;
 	}
 	
-	public void setMemberIconSmall(Blob memberIconSmall) {
+	public void setMemberIconSmall(String memberIconSmall) {
 		this.memberIconSmall = memberIconSmall;
 	}
 	
-	@Lob
-	@Column(name="member_icon_large", columnDefinition = "BLOB", nullable = true)
-	public Blob getMemberIconLarge() {
+	@Column(name="member_icon_large", length = 10, nullable = true)
+	public String getMemberIconLarge() {
 		return memberIconLarge;
 	}
 	
-	public void setMemberIconLarge(Blob memberIconLarge) {
+	public void setMemberIconLarge(String memberIconLarge) {
 		this.memberIconLarge = memberIconLarge;
 	}
 	
@@ -93,24 +108,6 @@ public class TeamMember extends BasicModel {
 	
 	public void setTeamURL(String teamURL) {
 		this.teamURL = teamURL;
-	}
-	
-	@Column(name="role", length=255, nullable = true)
-	public String getRole() {
-		return role;
-	}
-	
-	public void setRole(String role) {
-		this.role = role;
-	}
-	
-	@Column(name="is_starter", columnDefinition="SMALLINT(6)", nullable = true)
-	public Short getIsStarter() {
-		return isStarter;
-	}
-	
-	public void setIsStarter(Short isStarter) {
-		this.isStarter = isStarter;
 	}
 	
 	@Override

@@ -29,8 +29,8 @@
 	<camel:proxy id="invokeGetresult" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
 		serviceUrl="activemq:queue:emt.getresult?${activemq.proxy.param}"/>
 	
-	<camel:proxy id="invokeGetTouramentList" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.TouramentService"
-		serviceUrl="activemq:queue:emt.getTouramentList?${activemq.proxy.param}"/>
+	<camel:proxy id="invokeGetTournamentList" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.TournamentService"
+		serviceUrl="activemq:queue:emt.getTournamentList?${activemq.proxy.param}"/>
 	
 	<camel:proxy id="sysConfigService" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.SysConfigService"
 		serviceUrl="activemq:queue:emt.sysConfigService?${activemq.proxy.param}"/>
@@ -45,14 +45,76 @@
 		serviceUrl="activemq:queue:emt.getResult?${activemq.proxy.param}"/>
 		
 	<camel:proxy id="invokeGetLeaguetable" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
-		serviceUrl="activemq:queue:emt.getLeaguetable?${activemq.proxy.param}"/>
+		serviceUrl="activemq:queue:emt.getCircularTournamentTable?${activemq.proxy.param}"/>
 	
 	<camel:proxy id="invokeSaveSupportTeam" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
 		serviceUrl="activemq:queue:emt.saveSupportTeam?${activemq.proxy.param}"/>
 		
+	<!--
 	<camel:proxy id="invokeUpdateSupportCount" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
-		serviceUrl="activemq:queue:emt.updateSupportCount?${activemq.proxy.param}"/>
+		serviceUrl="activemq:queue:emt.updateSupportCount?${activemq.proxy.param}"/> 
 	
 	<camel:proxy id="invokeKeepAlive" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.KeepAliveService"
 		serviceUrl="activemq:queue:emt.keepAlive?${activemq.proxy.param}"/>
+	-->
+	
+	<camel:proxy id="invokeKnockoutrTournamentTable" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.TournamentService"
+		serviceUrl="activemq:queue:emt.getKnockoutrTournamentTable?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetGameList" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.GameService"
+		serviceUrl="activemq:queue:emt.getGameList?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetContestantPerformance" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
+		serviceUrl="activemq:queue:emt.getContestantPerformance?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetLeagueSeasonList" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.TournamentService"
+		serviceUrl="activemq:queue:emt.getLeagueSeasonList?${activemq.proxy.param}"/>
+
+	<camel:proxy id="invokeGetMatchConteststatus" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.MatchService"
+		serviceUrl="activemq:queue:emt.getMatchConteststatus?${activemq.proxy.param}"/>
+	
+	<camel:proxy id="invokeGetContestantList" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.GameService"
+		serviceUrl="activemq:queue:emt.getContestantList?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetTournamentDetails" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.TournamentService"
+		serviceUrl="activemq:queue:emt.getTournamentDetails?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeUpdateNotificationTimeSent" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.UserService"
+		serviceUrl="activemq:queue:emt.updateNotificationTimeSent?${activemq.proxy.param}"/>
+	
+	<camel:proxy id="invokeReadNotification" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.UserService"
+		serviceUrl="activemq:queue:emt.readNotification?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetUserNotify" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.UserService"
+		serviceUrl="activemq:queue:emt.getNotification?${activemq.proxy.param}"/>
+	
+	<camel:proxy id="invokeGetHa" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.UserService"
+		serviceUrl="activemq:queue:emt.getHa?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetContestLimit" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.UserService"
+		serviceUrl="activemq:queue:emt.getContestLimit?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeSecurityCode" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.SecurityCodeService"
+		serviceUrl="activemq:queue:auth.securityCode?${activemq.proxy.param}"/>
+	
+	<camel:proxy id="invokeMakeGuess" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.UserService"
+		serviceUrl="activemq:queue:emt.makeGuess?${activemq.proxy.param}"/>
+	
+	<camel:proxy id="invokeUpdateSubscription" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.UserService"
+		serviceUrl="activemq:queue:emt.updateSubscription?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetContestantSubscription" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.UserService"
+		serviceUrl="activemq:queue:emt.getContestantSubscription?${activemq.proxy.param}"/>
+	
+	<camel:proxy id="invokeGetMatchSubscription" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.UserService"
+		serviceUrl="activemq:queue:emt.getMatchSubscription?${activemq.proxy.param}"/>
+	
+	<camel:proxy id="invokeGetPersonalRecord" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.UserService"
+		serviceUrl="activemq:queue:emt.getPersonalRecord?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeGetPersonalRanking" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.UserService"
+		serviceUrl="activemq:queue:emt.getPersonalRanking?${activemq.proxy.param}"/>
+		
+	<camel:proxy id="invokeSendToFriend" camelContextId="camelContext" serviceInterface="com.hkesports.matchticker.service.UserService"
+		serviceUrl="activemq:queue:emt.sendToFriend?${activemq.proxy.param}"/>
 </beans>

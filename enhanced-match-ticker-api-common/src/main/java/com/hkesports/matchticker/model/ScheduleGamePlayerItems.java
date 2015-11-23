@@ -21,6 +21,7 @@ public class ScheduleGamePlayerItems extends BasicModel {
 	private Player player;
 	private GameItemTypeEnum itemType;
 	private Long itemId;
+	private String itemUrl;
 	private Short sequence = 0;
 	
 	@ManyToOne
@@ -60,6 +61,15 @@ public class ScheduleGamePlayerItems extends BasicModel {
 	
 	public void setItemId(Long itemId) {
 		this.itemId = itemId;
+	}
+	
+	@Column(name = "item_url", length = 255)
+	public String getItemUrl() {
+		return itemUrl;
+	}
+
+	public void setItemUrl(String itemUrl) {
+		this.itemUrl = itemUrl;
 	}
 	
 	@Column(name="sequence", columnDefinition="SMALLINT(6)")

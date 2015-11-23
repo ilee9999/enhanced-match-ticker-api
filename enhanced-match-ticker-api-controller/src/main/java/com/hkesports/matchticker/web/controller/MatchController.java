@@ -3,25 +3,29 @@ package com.hkesports.matchticker.web.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
+import net.rossillo.spring.web.mvc.CacheControl;
+import net.rossillo.spring.web.mvc.CachePolicy;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hkesports.matchticker.exception.SecurityCodeException;
 import com.hkesports.matchticker.service.MatchService;
 import com.hkesports.matchticker.vo.RequestVo;
 import com.hkesports.matchticker.vo.ResponseVo;
+import com.hkesports.matchticker.vo.getcontestantperformance.GetcontestantperformanceVo;
 import com.hkesports.matchticker.vo.getleaguetable.GetleaguetableVo;
+import com.hkesports.matchticker.vo.getmatchconteststatus.GetmatchconteststatusVo;
 import com.hkesports.matchticker.vo.getmatchstatistics.GetmatchstatisticsVo;
 import com.hkesports.matchticker.vo.getranking.GetrankingVo;
 import com.hkesports.matchticker.vo.getresult.GetresultVo;
 import com.hkesports.matchticker.vo.getschedule.GetscheduleVo;
 import com.hkesports.matchticker.vo.matchsupport.MatchsupportVo;
 import com.hkesports.matchticker.vo.supportteam.SupportteamVo;
-
-import net.rossillo.spring.web.mvc.CacheControl;
-import net.rossillo.spring.web.mvc.CachePolicy;
 
 /**
  * @author manboyu
@@ -45,8 +49,10 @@ public class MatchController extends BasicController {
 	private MatchService invokeGetLeaguetable;
 	@Resource(name = "invokeSaveSupportTeam")
 	private MatchService invokeSaveSupportTeam;
-	@Resource(name = "invokeUpdateSupportCount")
-	private MatchService invokeUpdateSupportCount;
+	@Resource(name = "invokeGetContestantPerformance")
+	private MatchService invokeGetContestantPerformance;
+	@Resource(name = "invokeGetMatchConteststatus")
+	private MatchService invokeGetMatchConteststatus;
 	
 	@CacheControl(policy = {CachePolicy.PUBLIC}, maxAge = ONE_MINUTE)
 	@RequestMapping(value = "/matchsupport", method = RequestMethod.GET)
@@ -55,44 +61,69 @@ public class MatchController extends BasicController {
 	}
 	
 	@CacheControl(policy = {CachePolicy.PUBLIC}, maxAge = ONE_HOUR)
-	@RequestMapping(value = "/getmatchstatistics", method = RequestMethod.GET)
-	public ResponseVo<GetmatchstatisticsVo> getmatchstatistics(HttpServletResponse response , @RequestParam(value = "matchID") Long matchId) {
-//		response.setHeader("Last-Modified", DateFormatUtils.format(new Date(), "EEE, dd MMM yyyy HH:mm:ss zzz", TimeZone.getTimeZone("GMT"), Locale.US));
-		return new ResponseVo<>(invokeGetMatchStatistics.getMatchStatistics(matchId));
+	@RequestMapping(value = "/lol/getmatchstatistics", method = RequestMethod.GET)
+	public ResponseVo<GetmatchstatisticsVo> getlolmatchstatistics(@RequestParam(value = "matchID") Long matchId) {
+		return new ResponseVo<>(invokeGetMatchStatistics.getlolMatchStatistics(matchId));
 	}
 	
 	@CacheControl(policy = {CachePolicy.PUBLIC}, maxAge = ONE_HOUR)
-	@RequestMapping(value = "/getschedule", method = RequestMethod.GET)
-	public ResponseVo<GetscheduleVo> getschedule(@ModelAttribute RequestVo requestVo) {
+	@RequestMapping(value = "/dota2/getmatchstatistics", method = RequestMethod.GET)
+	public ResponseVo<GetmatchstatisticsVo> getdota2matchstatistics(@RequestParam(value = "matchID") Long matchId) {
+		return new ResponseVo<>(invokeGetMatchStatistics.getdota2MatchStatistics(matchId));
+	}
+	
+	@CacheControl(policy = CachePolicy.PUBLIC, maxAge = ONE_HOUR)
+	@RequestMapping(value = "/getschedule", method = {RequestMethod.GET, RequestMethod.POST})
+	public ResponseVo<GetscheduleVo> getschedule(@ModelAttribute RequestVo requestVo, HttpServletResponse response) {
+		if(StringUtils.isNotBlank(requestVo.getRegistrationID())) {
+			response.setHeader(HEADER_CACHE_CONTROL, CachePolicy.NO_CACHE.policy());
+			try {
+				String secretKey = decode(requestVo.getRegistrationID(), requestVo.getSecretKey());
+				requestVo.setSecretKey(secretKey);
+			} catch (SecurityCodeException e) {
+				logger.error("getschedule error!!", e);
+				return new ResponseVo<>(new GetscheduleVo(e.getStatusCode()));
+			}
+		}
 		return new ResponseVo<>(invokeGetSchedule.getSchedule(requestVo));
 	}
 	
-	@CacheControl(policy = {CachePolicy.PUBLIC}, maxAge = TEN_MINUTE)
+	@CacheControl(policy = CachePolicy.PUBLIC, maxAge = TEN_MINUTE)
 	@RequestMapping(value = "/getresult", method = RequestMethod.GET)
 	public ResponseVo<GetresultVo> getresult(@ModelAttribute RequestVo requestVo) {
 		return new ResponseVo<>(invokeGetResult.getResult(requestVo));
 	}
 	
-	@CacheControl(policy = {CachePolicy.PUBLIC}, maxAge = TEN_MINUTE)
+	@CacheControl(policy = CachePolicy.PUBLIC, maxAge = TEN_MINUTE)
 	@RequestMapping(value = "/getranking", method = RequestMethod.GET)
 	public ResponseVo<GetrankingVo> getranking(@ModelAttribute RequestVo requestVo) {
 		return new ResponseVo<>(invokeGetRanking.getRanking(requestVo));
 	}
 	
-	@CacheControl(policy = {CachePolicy.PUBLIC}, maxAge = TEN_MINUTE)
-	@RequestMapping(value = "/getleaguetable", method = RequestMethod.GET)
-	public ResponseVo<GetleaguetableVo> getleaguetable(@ModelAttribute RequestVo requestVo) {
-		return new ResponseVo<>(invokeGetLeaguetable.getLeaguetable(requestVo));
+	@CacheControl(policy = CachePolicy.PUBLIC, maxAge = TEN_MINUTE)
+	@RequestMapping(value = "/getcirculartournamenttable", method = RequestMethod.GET)
+	public ResponseVo<GetleaguetableVo> getcirculartournamenttable(@ModelAttribute RequestVo requestVo) {
+		return new ResponseVo<>(invokeGetLeaguetable.getCircularTournamentTable(requestVo));
 	}
 	
-	@RequestMapping(value = "/supportteam", method = RequestMethod.POST)
-	public ResponseVo<SupportteamVo> supportteam(@RequestParam(value = "matchID") Long matchId, 
-			@RequestParam(value = "teamID") Long teamID,
+	@CacheControl
+	@RequestMapping(value = "/supportcontestant", method = RequestMethod.POST)
+	public ResponseVo<SupportteamVo> supportcontestant(@RequestParam(value = "matchID") Long matchId, 
+			@RequestParam(value = "contestantID") Long contestantID,
 			@RequestParam(value = "facebookID") String facebookID) {
-		SupportteamVo vo = invokeSaveSupportTeam.saveSupportTeam(matchId, teamID, facebookID);
-		if(vo!=null && vo.getStatusCode()==0) {
-			vo = invokeUpdateSupportCount.updateSupportCount(matchId);
-		}
-		return new ResponseVo<>(vo);
+		return new ResponseVo<>(invokeSaveSupportTeam.saveSupportTeam(matchId, contestantID, facebookID));
+	}
+	
+	@CacheControl(policy = CachePolicy.PUBLIC, maxAge = ONE_HOUR)
+	@RequestMapping(value = "/getcontestantperformance", method = {RequestMethod.GET})
+	public ResponseVo<GetcontestantperformanceVo> getcontestantperformance(@RequestParam(value = "matchID") Long matchId) {
+		return new ResponseVo<>(invokeGetContestantPerformance.getContestantPerformance(matchId));
+	}
+	
+	@CacheControl(policy = CachePolicy.PUBLIC, maxAge = ONE_MINUTE)
+	@RequestMapping(value = "/getmatchconteststatus", method = {RequestMethod.GET})
+	public ResponseVo<GetmatchconteststatusVo> getmatchconteststatus(@RequestParam(value = "matchID") Long matchId, 
+			@RequestParam(value = "gameNumber") Short gameNumber) {
+		return new ResponseVo<>(invokeGetMatchConteststatus.getMatchConteststatus(matchId, gameNumber));
 	}
 }

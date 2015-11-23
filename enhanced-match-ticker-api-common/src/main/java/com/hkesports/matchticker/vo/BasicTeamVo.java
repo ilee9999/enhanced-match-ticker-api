@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author manboyu
  *
@@ -14,33 +16,32 @@ public class BasicTeamVo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long ID;
-	private Integer teamNumber;
-	private String teamName;
-	private String teamAronym;
-	private Long teamWins;
-	private Long teamLosses;
-	private String teamCountry;
-	private String teamURL;
-	private String teamLogoURLThumbnail;
-	private String teamLogoURLLarge;
-	private String teamLogoURLOriginal;
-
+	protected Integer contestantNumber;
+	protected String contestantName;
+	protected String contestantAronym;
+	protected Long contestantWins;
+	protected Long contestantDraws;
+	protected Long contestantLosses;
+	protected String contestantCountry;// (To be input by admin)
+	protected String contestantURL;
+	protected String contestantLogoURLThumbnail;
+	protected String contestantLogoURLLarge;
+	
 	public BasicTeamVo() {
 	}
-	
-	public BasicTeamVo(Long iD, Integer teamNumber, String teamName, String teamAronym, String teamCountry, String teamURL, String logoURL) {
-		super();
-		this.ID = iD;
-		this.teamNumber = teamNumber;
-		this.teamName = teamName;
-		this.teamAronym = teamAronym;
-		this.teamCountry = teamCountry;
-		this.teamURL = teamURL;
-		this.teamLogoURLThumbnail = logoURL;
-		this.teamLogoURLLarge = logoURL;
-		this.teamLogoURLOriginal = logoURL;
-	}
 
+	public BasicTeamVo(Long ID, String contestantName, String contestantAronym, String contestantCountry, 
+			String contestantURL, String contestantLogoURLThumbnail, String contestantLogoURLLarge) {
+		this.ID = ID;
+		this.contestantName = contestantName;
+		this.contestantAronym = contestantAronym;
+		this.contestantCountry = contestantCountry;// (To be input by admin)
+		this.contestantURL = contestantURL;
+		this.contestantLogoURLThumbnail = contestantLogoURLThumbnail;
+		this.contestantLogoURLLarge = contestantLogoURLLarge;
+	}
+	
+	@JsonProperty("ID")
 	public Long getID() {
 		return ID;
 	}
@@ -49,88 +50,89 @@ public class BasicTeamVo implements Serializable {
 		ID = iD;
 	}
 
-	public Integer getTeamNumber() {
-		return teamNumber;
+	public Integer getContestantNumber() {
+		return contestantNumber;
 	}
 
-	public void setTeamNumber(Integer teamNumber) {
-		this.teamNumber = teamNumber;
+	public void setContestantNumber(Integer contestantNumber) {
+		this.contestantNumber = contestantNumber;
 	}
 
-	public String getTeamName() {
-		return teamName;
+	public String getContestantName() {
+		return contestantName;
 	}
 
-	public void setTeamName(String teamName) {
-		this.teamName = teamName;
+	public void setContestantName(String contestantName) {
+		this.contestantName = contestantName;
 	}
 
-	public String getTeamAronym() {
-		return teamAronym;
+	public String getContestantAronym() {
+		return contestantAronym;
 	}
 
-	public void setTeamAronym(String teamAronym) {
-		this.teamAronym = teamAronym;
+	public void setContestantAronym(String contestantAronym) {
+		this.contestantAronym = contestantAronym;
 	}
 
-	public Long getTeamWins() {
-		return teamWins;
+	public Long getContestantWins() {
+		return contestantWins;
 	}
 
-	public void setTeamWins(Long teamWins) {
-		this.teamWins = teamWins;
+	public void setContestantWins(Long contestantWins) {
+		this.contestantWins = contestantWins;
 	}
 
-	public Long getTeamLosses() {
-		return teamLosses;
+	public Long getContestantDraws() {
+		return contestantDraws;
 	}
 
-	public void setTeamLosses(Long teamLosses) {
-		this.teamLosses = teamLosses;
+	public void setContestantDraws(Long contestantDraws) {
+		this.contestantDraws = contestantDraws;
+	}
+	
+	public Long getContestantLosses() {
+		return contestantLosses;
 	}
 
-	public String getTeamCountry() {
-		return teamCountry;
+	public void setContestantLosses(Long contestantLosses) {
+		this.contestantLosses = contestantLosses;
 	}
 
-	public void setTeamCountry(String teamCountry) {
-		this.teamCountry = teamCountry;
+	public String getContestantCountry() {
+		return contestantCountry;
 	}
 
-	public String getTeamURL() {
-		return teamURL;
+	public void setContestantCountry(String contestantCountry) {
+		this.contestantCountry = contestantCountry;
 	}
 
-	public void setTeamURL(String teamURL) {
-		this.teamURL = teamURL;
+	public String getContestantURL() {
+		return contestantURL;
 	}
 
-	public String getTeamLogoURLThumbnail() {
-		return teamLogoURLThumbnail;
+	public void setContestantURL(String contestantURL) {
+		this.contestantURL = contestantURL;
 	}
 
-	public void setTeamLogoURLThumbnail(String teamLogoURLThumbnail) {
-		this.teamLogoURLThumbnail = teamLogoURLThumbnail;
+	public String getContestantLogoURLThumbnail() {
+		return contestantLogoURLThumbnail;
 	}
 
-	public String getTeamLogoURLLarge() {
-		return teamLogoURLLarge;
+	public void setContestantLogoURLThumbnail(String contestantLogoURLThumbnail) {
+		this.contestantLogoURLThumbnail = contestantLogoURLThumbnail;
 	}
 
-	public void setTeamLogoURLLarge(String teamLogoURLLarge) {
-		this.teamLogoURLLarge = teamLogoURLLarge;
+	public String getContestantLogoURLLarge() {
+		return contestantLogoURLLarge;
 	}
 
-	public String getTeamLogoURLOriginal() {
-		return teamLogoURLOriginal;
+	public void setContestantLogoURLLarge(String contestantLogoURLLarge) {
+		this.contestantLogoURLLarge = contestantLogoURLLarge;
 	}
-
-	public void setTeamLogoURLOriginal(String teamLogoURLOriginal) {
-		this.teamLogoURLOriginal = teamLogoURLOriginal;
-	}
-
+	
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
+
 }

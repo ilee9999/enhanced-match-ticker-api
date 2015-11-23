@@ -17,7 +17,7 @@ import com.hkesports.matchticker.repository.DataDao;
 import com.hkesports.matchticker.repository.ScheduleGameDetailDao;
 import com.hkesports.matchticker.repository.TeamDao;
 import com.hkesports.matchticker.service.MatchService;
-import com.hkesports.matchticker.utils.Const;
+import com.hkesports.matchticker.test.AbstractTest;
 
 public class MatchServiceTest extends AbstractTest {
 
@@ -36,8 +36,8 @@ public class MatchServiceTest extends AbstractTest {
 	
 	@Before
 	public void setUp() {
-		matchId = 86563L;
-		team = teamDao.findOne(23487L);
+		// matchId = 86563L;
+		// team = teamDao.findOne(23487L);
 	}
 	
 	@Test
@@ -45,12 +45,6 @@ public class MatchServiceTest extends AbstractTest {
 	public void testMatchsupport() {
 		matchService.matchSupport(matchId);
 		// matchService.getRanking(GameTypeEnum.LOL);
-	}
-	
-	@Test
-	@Ignore
-	public void testFindData(){
-		dataDao.findByCodeData(Const.CODE_NAME_TEAM_POSITION, "RADIANT");
 	}
 	
 	@Test
@@ -64,7 +58,7 @@ public class MatchServiceTest extends AbstractTest {
 	@Test
 	@Ignore
 	public void testGetmatchstatistics() {
-		matchService.getMatchStatistics(48830L);
+		matchService.getlolMatchStatistics(48830L);
 	}
 	
 	@Test

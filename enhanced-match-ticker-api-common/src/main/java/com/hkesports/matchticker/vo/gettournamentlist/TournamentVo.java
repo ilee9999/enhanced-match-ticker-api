@@ -27,6 +27,7 @@ public class TournamentVo implements Serializable {
 	private Date tournamentEndDate;
 	private String tournamentDescription;
 	private String tournamentChannelURL;
+	private String tournamentCompetitionSystem;
 	private List<GameVo> Games = new ArrayList<>();
 
 	public Long getTournamentID() {
@@ -114,6 +115,15 @@ public class TournamentVo implements Serializable {
 		.append("tournamentEndDate", getTournamentEndDate())
 		.append("tournamentDescription", getTournamentDescription())
 		.append("tournamentChannelURL", getTournamentChannelURL())
+		.append("tournamentCompetitionSystem", getTournamentCompetitionSystem())
 		.build();
+	}
+
+	public String getTournamentCompetitionSystem() {
+		return tournamentCompetitionSystem;
+	}
+
+	public void setTournamentCompetitionSystem(String tournamentCompetitionSystem) {
+		this.tournamentCompetitionSystem = tournamentCompetitionSystem;
 	}
 }

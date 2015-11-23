@@ -1,46 +1,30 @@
 package com.hkesports.matchticker.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.hkesports.matchticker.model.basic.BasicIdModel;
+
 @Entity
 @Table(name = "notification_read_history")
-public class NotificationReadHistory implements Serializable {
+@Deprecated
+public class NotificationReadHistory extends BasicIdModel {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
 	private Date sendDate;
 	private Date readDate;
 	private Date joinDate;
 	private Long userId;
 	private String registrationId;
 	private Long notificationId;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "BIGINT(20)", nullable = false)
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "send_date", nullable = true)
+	@Column(name = "send_date", columnDefinition = "DATETIME", nullable = true)
 	public Date getSendDate() {
 		return sendDate;
 	}
@@ -49,8 +33,7 @@ public class NotificationReadHistory implements Serializable {
 		this.sendDate = sendDate;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "read_date", nullable = true)
+	@Column(name = "read_date", columnDefinition = "DATETIME", nullable = true)
 	public Date getReadDate() {
 		return readDate;
 	}
@@ -59,8 +42,7 @@ public class NotificationReadHistory implements Serializable {
 		this.readDate = readDate;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "join_date", nullable = true)
+	@Column(name = "join_date", columnDefinition = "DATETIME", nullable = true)
 	public Date getJoinDate() {
 		return joinDate;
 	}

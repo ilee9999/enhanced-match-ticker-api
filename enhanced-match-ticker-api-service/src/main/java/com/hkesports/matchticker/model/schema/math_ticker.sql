@@ -97,7 +97,7 @@
 
     drop table if exists team_member cascade;
 
-    drop table if exists tourament cascade;
+    drop table if exists tournament cascade;
 
     drop sequence hibernate_sequence;
 
@@ -234,7 +234,7 @@
         type varchar(100),
         url varchar(255),
         schedule_game_id BIGINT(20),
-        tourament_id BIGINT(20),
+        tournament_id BIGINT(20),
         primary key (id)
     );
 
@@ -304,10 +304,10 @@
         start_time timestamp not null,
         team_a_name varchar(50),
         team_b_name varchar(50),
-        tourament_name varchar(255),
+        tournament_name varchar(255),
         winner BIGINT(20),
         game_id BIGINT(20),
-        tourament_id BIGINT(20),
+        tournament_id BIGINT(20),
         primary key (id)
     );
 
@@ -494,7 +494,7 @@
         primary key (id)
     );
 
-    create table tourament (
+    create table tournament (
         id BIGINT(20) not null,
         create_date timestamp,
         update_date timestamp,
@@ -508,16 +508,16 @@
         menu_weight INT(11),
         no_vods SMALLINT(6),
         published SMALLINT(6),
-        tourament_channel_url varchar(255),
-        tourament_description TEXT,
-        tourament_from_date timestamp,
-        tourament_icon_Huge BLOB,
-        tourament_icon_large BLOB,
-        tourament_icon_small BLOB,
-        tourament_Name varchar(255) not null,
-        tourament_short_name varchar(100) not null,
-        tourament_site_url varchar(255) not null,
-        tourament_to_date timestamp,
+        tournament_channel_url varchar(255),
+        tournament_description TEXT,
+        tournament_from_date timestamp,
+        tournament_icon_Huge BLOB,
+        tournament_icon_large BLOB,
+        tournament_icon_small BLOB,
+        tournament_Name varchar(255) not null,
+        tournament_short_name varchar(100) not null,
+        tournament_site_url varchar(255) not null,
+        tournament_to_date timestamp,
         win_score SMALLINT(6) not null,
         primary key (id)
     );
@@ -564,8 +564,8 @@
 
     alter table live_streams 
         add constraint FK_dp564xy6sq2pkop6xrc7xjoj1 
-        foreign key (tourament_id) 
-        references tourament;
+        foreign key (tournament_id) 
+        references tournament;
 
     alter table schedule 
         add constraint FK_6nfp4pgp600slo18rrvxhcd6 
@@ -574,8 +574,8 @@
 
     alter table schedule 
         add constraint FK_20dfnxem5b4vdnv3mrkxth5m4 
-        foreign key (tourament_id) 
-        references tourament;
+        foreign key (tournament_id) 
+        references tournament;
 
     alter table schedule_game 
         add constraint FK_dimnlsud0v72hbjfl80tdg3f3 

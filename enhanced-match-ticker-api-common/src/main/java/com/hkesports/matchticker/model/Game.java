@@ -1,47 +1,52 @@
 package com.hkesports.matchticker.model;
 
-import java.sql.Blob;
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import com.hkesports.matchticker.model.basic.BasicApiInfo;
+import com.hkesports.matchticker.enums.GameTypeEnum;
+import com.hkesports.matchticker.model.basic.BasicAuditModel;
 
 @Entity
 @Table(name = "game")
-public class Game extends BasicApiInfo {
+public class Game extends BasicAuditModel {
 	
 	private static final long serialVersionUID = 1L;
 
 	private String enGameName;
 	private String twGameName;
-	private Blob gameIconSmall;
-	private Blob gameIconLarge;
+	private String gameIconSmall;
+	private String gameIconLarge;
 	private String gameUrl;
-	private Boolean team = true;
-	private Blob teamADefaultIconSmall;
-	private Blob teamBDefaultIconSmall;
-	private Blob teamADefaultIconLarge;
-	private Blob teamBDefaultIconLarge;
+	private Boolean team = Boolean.TRUE;
+	private String teamADefaultIconSmall;
+	private String teamBDefaultIconSmall;
+	private String teamADefaultIconLarge;
+	private String teamBDefaultIconLarge;
 	private Short winScore = 3;
 	private Short drawScore = 1;
 	private Short loseScore = 0;
-	private Date dateTime;
-	private Long winnerId;
-	private Short maxGames;
-	private Boolean isLive;
-	private String isFinished;
-	private String polldaddyId;
+	private String wordpressCateory;
+	private String wordpressImportantCategory;
+	private GameTypeEnum gameCode;
 	
-	@Column(name = "en_game_name", length = 100, nullable = false)
+	public Game() {
+		
+	}
+	
+	public Game(Long id, String enGameName, String twGameName) {
+		this.setId(id);
+		this.enGameName = enGameName;
+		this.twGameName = twGameName;
+	}
+	
+	@Column(name = "en_game_name", length = 128, nullable = false)
 	public String getEnGameName() {
 		return enGameName;
 	}
@@ -50,7 +55,7 @@ public class Game extends BasicApiInfo {
 		this.enGameName = enGameName;
 	}
 	
-	@Column(name = "tw_game_name", length = 100, nullable = false)
+	@Column(name = "tw_game_name", length = 128, nullable = false)
 	public String getTwGameName() {
 		return twGameName;
 	}
@@ -59,23 +64,21 @@ public class Game extends BasicApiInfo {
 		this.twGameName = twGameName;
 	}
 	
-	@Lob
-	@Column(name = "game_icon_small", columnDefinition = "BLOB", nullable = true)
-	public Blob getGameIconSmall() {
+	@Column(name = "game_icon_small", length = 10, nullable = true)
+	public String getGameIconSmall() {
 		return gameIconSmall;
 	}
 	
-	public void setGameIconSmall(Blob gameIconSmall) {
+	public void setGameIconSmall(String gameIconSmall) {
 		this.gameIconSmall = gameIconSmall;
 	}
 	
-	@Lob
-	@Column(name = "game_icon_large", columnDefinition = "BLOB", nullable = true)
-	public Blob getGameIconLarge() {
+	@Column(name = "game_icon_large", length = 10, nullable = true)
+	public String getGameIconLarge() {
 		return gameIconLarge;
 	}
 	
-	public void setGameIconLarge(Blob gameIconLarge) {
+	public void setGameIconLarge(String gameIconLarge) {
 		this.gameIconLarge = gameIconLarge;
 	}
 	
@@ -88,7 +91,7 @@ public class Game extends BasicApiInfo {
 		this.gameUrl = gameUrl;
 	}
 	
-	@Column(name = "team", columnDefinition = "TINYINT(4)", nullable=false)
+	@Column(name = "team", columnDefinition = "TINYINT(4)", nullable = false)
 	public Boolean getTeam() {
 		return team;
 	}
@@ -97,43 +100,39 @@ public class Game extends BasicApiInfo {
 		this.team = team;
 	}
 	
-	@Lob
-	@Column(name = "team_a_default_icon_small", columnDefinition = "BLOB", nullable = true)
-	public Blob getTeamADefaultIconSmall() {
+	@Column(name = "team_a_default_icon_small", length = 10, nullable = true)
+	public String getTeamADefaultIconSmall() {
 		return teamADefaultIconSmall;
 	}
 	
-	public void setTeamADefaultIconSmall(Blob teamADefaultIconSmall) {
+	public void setTeamADefaultIconSmall(String teamADefaultIconSmall) {
 		this.teamADefaultIconSmall = teamADefaultIconSmall;
 	}
 	
-	@Lob
-	@Column(name = "team_b_default_icon_small", columnDefinition = "BLOB", nullable = true)
-	public Blob getTeamBDefaultIconSmall() {
+	@Column(name = "team_b_default_icon_small", length = 10, nullable = true)
+	public String getTeamBDefaultIconSmall() {
 		return teamBDefaultIconSmall;
 	}
 	
-	public void setTeamBDefaultIconSmall(Blob teamBDefaultIconSmall) {
+	public void setTeamBDefaultIconSmall(String teamBDefaultIconSmall) {
 		this.teamBDefaultIconSmall = teamBDefaultIconSmall;
 	}
 	
-	@Lob
-	@Column(name = "team_a_default_icon_large", columnDefinition = "BLOB", nullable = true)
-	public Blob getTeamADefaultIconLarge() {
+	@Column(name = "team_a_default_icon_large", length = 10, nullable = true)
+	public String getTeamADefaultIconLarge() {
 		return teamADefaultIconLarge;
 	}
 	
-	public void setTeamADefaultIconLarge(Blob teamADefaultIconLarge) {
+	public void setTeamADefaultIconLarge(String teamADefaultIconLarge) {
 		this.teamADefaultIconLarge = teamADefaultIconLarge;
 	}
 	
-	@Lob
-	@Column(name = "team_b_default_icon_large", columnDefinition = "BLOB", nullable = true)
-	public Blob getTeamBDefaultIconLarge() {
+	@Column(name = "team_b_default_icon_large", length = 10, nullable = true)
+	public String getTeamBDefaultIconLarge() {
 		return teamBDefaultIconLarge;
 	}
 	
-	public void setTeamBDefaultIconLarge(Blob teamBDefaultIconLarge) {
+	public void setTeamBDefaultIconLarge(String teamBDefaultIconLarge) {
 		this.teamBDefaultIconLarge = teamBDefaultIconLarge;
 	}
 	
@@ -146,7 +145,7 @@ public class Game extends BasicApiInfo {
 		this.winScore = winScore;
 	}
 	
-	@Column(name = "draw_score", columnDefinition = "SMALLINT(6)", nullable=false)
+	@Column(name = "draw_score", columnDefinition = "SMALLINT(6)", nullable = false)
 	public Short getDrawScore() {
 		return drawScore;
 	}
@@ -164,67 +163,43 @@ public class Game extends BasicApiInfo {
 		this.loseScore = loseScore;
 	}
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name =" date_time", nullable = true)
-	public Date getDateTime() {
-		return dateTime;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "game_code", length = 10, nullable = true)
+	public GameTypeEnum getGameCode() {
+		return gameCode;
+	}
+
+	public void setGameCode(GameTypeEnum gameCode) {
+		this.gameCode = gameCode;
 	}
 	
-	public void setDateTime(Date dateTime) {
-		this.dateTime = dateTime;
+	@Column(name = "wordpress_cateory", length = 128, nullable = true)
+	public String getWordpressCateory() {
+		return wordpressCateory;
+	}
+
+	public void setWordpressCateory(String wordpressCateory) {
+		this.wordpressCateory = wordpressCateory;
+	}
+
+	@Column(name = "wordpress_important_category", length = 128, nullable = true)
+	public String getWordpressImportantCategory() {
+		return wordpressImportantCategory;
+	}
+
+	public void setWordpressImportantCategory(String wordpressImportantCategory) {
+		this.wordpressImportantCategory = wordpressImportantCategory;
 	}
 	
-	@Column(name = "winner_id", columnDefinition = "SMALLINT(6)", nullable = true)
-	public Long getWinnerId() {
-		return winnerId;
+	@Transient
+	public String getName() {
+		return this.enGameName + "(" + this.twGameName + ")";
 	}
-	
-	public void setWinnerId(Long winnerId) {
-		this.winnerId = winnerId;
-	}
-	
-	@Column(name="max_games", columnDefinition="SMALLINT(6)", nullable=true)
-	public Short getMaxGames() {
-		return maxGames;
-	}
-	
-	public void setMaxGames(Short maxGames) {
-		this.maxGames = maxGames;
-	}
-	
-	@Column(name = "is_live", columnDefinition = "TINYINT(4)", nullable = true)
-	public Boolean getIsLive() {
-		return isLive;
-	}
-	
-	public void setIsLive(Boolean isLive) {
-		this.isLive = isLive;
-	}
-	
-	@Column(name = "is_finished", length = 10, nullable = true)
-	public String getIsFinished() {
-		return isFinished;
-	}
-	
-	public void setIsFinished(String isFinished) {
-		this.isFinished = isFinished;
-	}
-	
-	@Column(name = "polldaddy_id", length = 255, nullable = true)
-	public String getPolldaddyId() {
-		return polldaddyId;
-	}
-	
-	public void setPolldaddyId(String polldaddyId) {
-		this.polldaddyId = polldaddyId;
-	}
-	
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 		.append("id", getId())
-		.append("apiId", getApiId())
-		.append("gameType", getGameType())
 		.append("enGameName", getEnGameName())
 		.append("twGameName", getTwGameName())
 		.append("gameIconSmall", getGameIconSmall())
@@ -238,12 +213,6 @@ public class Game extends BasicApiInfo {
 		.append("winScore", getWinScore())
 		.append("drawScore", getDrawScore())
 		.append("loseScore", getLoseScore())
-		.append("dateTime", getDateTime())
-		.append("winnerId", getWinnerId())
-		.append("maxGames", getMaxGames())
-		.append("isLive", getIsLive())
-		.append("isFinished", getIsFinished())
-		.append("polldaddyId", getPolldaddyId())
 		.build();
 	}
 }

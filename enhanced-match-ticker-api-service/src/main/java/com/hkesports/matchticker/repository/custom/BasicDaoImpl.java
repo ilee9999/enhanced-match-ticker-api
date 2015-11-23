@@ -2,16 +2,22 @@ package com.hkesports.matchticker.repository.custom;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.SQLQuery;
-import org.hibernate.type.DateType;
+import org.hibernate.type.BigIntegerType;
+import org.hibernate.type.BooleanType;
 import org.hibernate.type.DoubleType;
 import org.hibernate.type.FloatType;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.ShortType;
 import org.hibernate.type.StringType;
+import org.hibernate.type.TimestampType;
+import org.springframework.util.CollectionUtils;
 
 public class BasicDaoImpl {
 	
@@ -24,6 +30,13 @@ public class BasicDaoImpl {
 		} else {
 			addScalarByNames(clazz, queryObj, fieldNames);
 		}
+	}
+	
+	protected void addScalarsExclude(Class<?> clazz, SQLQuery queryObj, String... fieldNames) {
+		if(clazz==null || queryObj==null) {
+			return;
+		}
+		addScalarByClass(clazz, queryObj, fieldNames);
 	}
 	
 	protected void addScalarsBoth(Class<?> clazz, SQLQuery queryObj, String... fieldNames) {
@@ -41,17 +54,25 @@ public class BasicDaoImpl {
 	 * @param clazz
 	 * @param queryObj
 	 * @param fieldNames
+	 * @param excludeFields
 	 */
-	protected void addScalarByClass(Class<?> clazz, SQLQuery queryObj) {
+	protected void addScalarByClass(Class<?> clazz, SQLQuery queryObj, String... excludeFields) {
 		if(clazz==null || queryObj==null) {
 			return;
 		}
+		List<String> excludeList = null;
+		if(excludeFields != null && excludeFields.length > 0) {
+			excludeList = Arrays.asList(excludeFields);
+		}
+		
 		Field[] fields = clazz.getDeclaredFields();
-		for(Field field:fields) {
-			addScalar(field, queryObj, true);
+		for(Field field : fields) {
+			if(CollectionUtils.isEmpty(excludeList) || !excludeList.contains(field.getName())) {
+				addScalar(field, queryObj, true);
+			}
 		}
 		if(clazz.getSuperclass()!=null) {
-			addScalarByClass(clazz.getSuperclass(), queryObj);
+			addScalarByClass(clazz.getSuperclass(), queryObj, excludeFields);
 		}
 	}
 	
@@ -73,7 +94,7 @@ public class BasicDaoImpl {
 			try {
 				addScalar(clazz.getDeclaredField(fieldName), queryObj, false);
 			} catch (NoSuchFieldException | SecurityException e) {
-				e.printStackTrace();
+				
 			}
 		}
 		if(clazz.getSuperclass()!=null) {
@@ -100,14 +121,18 @@ public class BasicDaoImpl {
 			queryObj.addScalar(field.getName(), IntegerType.INSTANCE);
 		} else if(fieldType == Long.class || fieldType.getName().equals("long")) {
 			queryObj.addScalar(field.getName(), LongType.INSTANCE);
+		} else if(fieldType == BigInteger.class) {
+			queryObj.addScalar(field.getName(), BigIntegerType.INSTANCE);
 		} else if(fieldType == Date.class || fieldType == java.sql.Date.class) {
-			queryObj.addScalar(field.getName(), DateType.INSTANCE);
+			queryObj.addScalar(field.getName(), TimestampType.INSTANCE);
 		} else if(fieldType == Short.class || fieldType.getName().equals("short")) {
 			queryObj.addScalar(field.getName(), ShortType.INSTANCE);
 		} else if(fieldType == Double.class || fieldType.getName().equals("double")) {
 			queryObj.addScalar(field.getName(), DoubleType.INSTANCE);
 		} else if(fieldType == Float.class || fieldType.getName().equals("float")) {
 			queryObj.addScalar(field.getName(), FloatType.INSTANCE);
-		} 
+		} else if(fieldType == Boolean.class || fieldType.getName().equals("boolean")) {
+			queryObj.addScalar(field.getName(), BooleanType.INSTANCE);
+		}
 	}
 }

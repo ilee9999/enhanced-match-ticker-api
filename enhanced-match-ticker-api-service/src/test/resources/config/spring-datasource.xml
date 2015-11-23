@@ -53,32 +53,6 @@
 	
 	<jpa:repositories base-package="com.hkesports.matchticker.repository" entity-manager-factory-ref="entityManagerFactory"  
 		factory-class="com.hkesports.matchticker.repository.factory.GenericRepositoryFactoryBean" />
-
-	<beans profile="development">
-		<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-			<property name="driverClass" value="${jdbc.connection.driver_class}" />
-			<property name="jdbcUrl" value="${jdbc.connection.url}" />
-			<property name="user" value="${jdbc.connection.username}" />
-			<property name="password" value="${jdbc.connection.password}" />
-			<property name="autoCommitOnClose" value="false" />
-			<property name="checkoutTimeout" value="5000" />
-			<property name="maxStatements" value="100" />
-			<property name="initialPoolSize" value="10" />
-			<property name="minPoolSize" value="10" />
-			<property name="maxPoolSize" value="100" />
-			<property name="maxIdleTime" value="0" />
-			<property name="maxIdleTimeExcessConnections" value="120" />
-			<property name="idleConnectionTestPeriod" value="120" />
-			<property name="acquireIncrement" value="3" />
-			<property name="acquireRetryDelay" value="1000" />
-			<property name="acquireRetryAttempts" value="30" />
-			<property name="breakAfterAcquireFailure" value="false" />
-			<property name="testConnectionOnCheckout" value="false" />
-			<property name="unreturnedConnectionTimeout" value="1200" />
-			<property name="debugUnreturnedConnectionStackTraces" value="true" />
-			<property name="numHelperThreads" value="6" />
-		</bean>
-	</beans>
 	
 	<beans profile="test">
 		<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
@@ -86,32 +60,6 @@
 			<property name="jdbcUrl" value="${jdbc.connection.url}" />
 			<property name="user" value="${jdbc.connection.username}" />
 			<property name="password" value="${jdbc.connection.password}" />
-			<property name="autoCommitOnClose" value="false" />
-			<property name="checkoutTimeout" value="5000" />
-			<property name="maxStatements" value="100" />
-			<property name="initialPoolSize" value="10" />
-			<property name="minPoolSize" value="10" />
-			<property name="maxPoolSize" value="100" />
-			<property name="maxIdleTime" value="0" />
-			<property name="maxIdleTimeExcessConnections" value="120" />
-			<property name="idleConnectionTestPeriod" value="120" />
-			<property name="acquireIncrement" value="3" />
-			<property name="acquireRetryDelay" value="1000" />
-			<property name="acquireRetryAttempts" value="30" />
-			<property name="breakAfterAcquireFailure" value="false" />
-			<property name="testConnectionOnCheckout" value="false" />
-			<property name="unreturnedConnectionTimeout" value="1200" />
-			<property name="debugUnreturnedConnectionStackTraces" value="true" />
-			<property name="numHelperThreads" value="6" />
-		</bean>
-	</beans>
-
-	<beans profile="production">
-		<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-			<property name="driverClass" value="${jdbc.connection.driver_class.production}" />
-			<property name="jdbcUrl" value="${jdbc.connection.url.production}" />
-			<property name="user" value="${jdbc.connection.username.production}" />
-			<property name="password" value="${jdbc.connection.password.production}" />
 			<property name="autoCommitOnClose" value="false" />
 			<property name="checkoutTimeout" value="5000" />
 			<property name="maxStatements" value="100" />

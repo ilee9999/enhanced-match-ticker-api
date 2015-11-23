@@ -5,13 +5,15 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import com.hkesports.matchticker.model.basic.BasicApiInfo;
+import com.hkesports.matchticker.model.basic.BasicModel;
 
 /**
  * @author manboyu
@@ -19,10 +21,12 @@ import com.hkesports.matchticker.model.basic.BasicApiInfo;
  */
 @Entity
 @Table(name = "hero")
-public class Hero extends BasicApiInfo {
+public class Hero extends BasicModel {
 
 	private static final long serialVersionUID = 1L;
 
+	private Game game;
+	private Long apiId;
 	private String name;
 	private String title;
 	private String enName;
@@ -32,6 +36,25 @@ public class Hero extends BasicApiInfo {
 	private String version;
 	private List<SpellData> spellDateList;
 
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name = "game_id", nullable = true, columnDefinition="BIGINT(20)", referencedColumnName = "id")
+	public Game getGame() {
+		return game;
+	}
+	
+	public void setGame(Game game) {
+		this.game = game;
+	}
+	
+	@Column(name = "api_id", columnDefinition = "BIGINT(20)", nullable = true)
+	public Long getApiId() {
+		return apiId;
+	}
+
+	public void setApiId(Long apiId) {
+		this.apiId = apiId;
+	}
+	
 	@Column(name = "name", length = 50, nullable = false)
 	public String getName() {
 		return name;
@@ -109,7 +132,6 @@ public class Hero extends BasicApiInfo {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 		.append("id", getId())
 		.append("apiId", getApiId())
-		.append("gameType", getGameType())
 		.append("name", getName())
 		.append("imageFullName", getImageFullName())
 		.append("imageW", getImageW())
@@ -117,4 +139,5 @@ public class Hero extends BasicApiInfo {
 		.append("version", getVersion())
 		.build();
 	}
+
 }

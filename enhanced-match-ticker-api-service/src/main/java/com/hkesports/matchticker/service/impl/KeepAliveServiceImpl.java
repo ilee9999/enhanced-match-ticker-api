@@ -14,7 +14,7 @@ import com.hkesports.matchticker.config.routes.RouterConstant;
 import com.hkesports.matchticker.model.NotificationReadHistory;
 import com.hkesports.matchticker.repository.NotificationDao;
 import com.hkesports.matchticker.repository.NotificationReadHistoryDao;
-import com.hkesports.matchticker.service.EndUserService;
+import com.hkesports.matchticker.service.UserService;
 import com.hkesports.matchticker.service.KeepAliveService;
 import com.hkesports.matchticker.vo.KeepaliveReqVo;
 import com.hkesports.matchticker.vo.keepalive.KeepaliveVo;
@@ -25,10 +25,11 @@ import com.hkesports.matchticker.vo.keepalive.SystemNotificationVo;
  *
  */
 @Service("keepAliveService")
+@Deprecated
 public class KeepAliveServiceImpl implements KeepAliveService {
 
 	@Produce(uri = RouterConstant.emt_updateEndUserInfo + RouterConstant.CAMEL_TO_URI_COMMON_PARAMETER)
-	private EndUserService invokeUpdateEndUserInfo;
+	private UserService invokeUpdateEndUserInfo;
 	@Produce(uri = RouterConstant.emt_addNotificationHist + RouterConstant.CAMEL_TO_URI_COMMON_PARAMETER)
 	private KeepAliveService invokeAddNotificationHist;
 	
@@ -43,7 +44,7 @@ public class KeepAliveServiceImpl implements KeepAliveService {
 		List<SystemNotificationVo> notifications = notificationDao.getSystemNotifications(vo.getUserID(), vo.getMatchID());
 		result.setSystemNotification(notifications);
 		if(vo.getUserID() != null) {
-			invokeUpdateEndUserInfo.updateEndUserInfo(vo, new Date());
+			// invokeUpdateEndUserInfo.updateEndUserInfo(vo, new Date());
 			if(!CollectionUtils.isEmpty(notifications)) {
 				for(SystemNotificationVo notification : notifications) {
 					invokeAddNotificationHist.addNotificationHist(vo.getUserID(), notification.getNotificationID());

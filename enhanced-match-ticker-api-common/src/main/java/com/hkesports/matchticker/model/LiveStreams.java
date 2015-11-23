@@ -26,7 +26,7 @@ public class LiveStreams extends BasicModel {
 	private String url;
 	private String embedCode;
 	private String language;
-	private Tourament tourament;
+	private League league;
 	private ScheduleGame scheduleGame;
 	
 	@Column(name = "type", length = 100, nullable = true)
@@ -66,13 +66,13 @@ public class LiveStreams extends BasicModel {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "tourament_id", columnDefinition = "BIGINT(20)", nullable = true)
-	public Tourament getTourament() {
-		return tourament;
+	@JoinColumn(name = "league_id", columnDefinition = "BIGINT(20)", nullable = true)
+	public League getLeague() {
+		return league;
 	}
 
-	public void setTourament(Tourament tourament) {
-		this.tourament = tourament;
+	public void setLeague(League league) {
+		this.league = league;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -93,7 +93,7 @@ public class LiveStreams extends BasicModel {
 		.append("url", getUrl())
 		.append("embedCode", getEmbedCode())
 		.append("language", getLanguage())
-		.append("tourament", getTourament())
+		.append("league", getLeague())
 		.append("scheduleGame", getScheduleGame())
 		.build();
 	}

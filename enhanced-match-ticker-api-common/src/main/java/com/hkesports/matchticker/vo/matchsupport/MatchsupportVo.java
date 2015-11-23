@@ -10,7 +10,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hkesports.matchticker.utils.Const;
-import com.hkesports.matchticker.vo.BasicTeamVo;
 import com.hkesports.matchticker.vo.BasicVo;
 
 /**
@@ -25,8 +24,8 @@ public class MatchsupportVo extends BasicVo {
 	private Date matchDate;
 	private Date matchStartTime;
 	private Date matchEndTime;
-	private Integer team = 1;
-	private List<BasicTeamVo> Teams = new ArrayList<>();
+	private Boolean team;
+	private List<ContestantsVo> Contestants = new ArrayList<>();
 	private Long tournamentID;
 	private String tournamentName;
 	private String tournamentShortName;
@@ -42,7 +41,7 @@ public class MatchsupportVo extends BasicVo {
 	public MatchsupportVo(Date matchDate, Date matchStartTime,
 			Date matchEndTime, Long tournamentID, String tournamentName,
 			String tournamentShortName, String tournamentSiteURL,
-			String matchLiveURL, String matchArchiveURL, Long matchID) {
+			String matchLiveURL, String matchArchiveURL, Long matchID, Boolean team) {
 		this.matchDate = matchDate;
 		this.matchStartTime = matchStartTime;
 		this.matchEndTime = matchEndTime;
@@ -53,6 +52,7 @@ public class MatchsupportVo extends BasicVo {
 		this.matchLiveURL = matchLiveURL;
 		this.matchArchiveURL = matchArchiveURL;
 		this.matchID = matchID;
+		this.team = team;
 	}
 
 	public Long getMatchID() {
@@ -90,21 +90,21 @@ public class MatchsupportVo extends BasicVo {
 		this.matchEndTime = matchEndTime;
 	}
 
-	public Integer getTeam() {
+	public Boolean getTeam() {
 		return team;
 	}
 
-	public void setTeam(Integer team) {
+	public void setTeam(Boolean team) {
 		this.team = team;
 	}
 
-	@JsonProperty("Teams")
-	public List<BasicTeamVo> getTeams() {
-		return Teams;
+	@JsonProperty("Contestants")
+	public List<ContestantsVo> getContestants() {
+		return Contestants;
 	}
 
-	public void setTeams(List<BasicTeamVo> teams) {
-		Teams = teams;
+	public void setContestants(List<ContestantsVo> Contestants) {
+		this.Contestants = Contestants;
 	}
 
 	public Long getTournamentID() {

@@ -5,4 +5,5 @@ import com.hkesports.matchticker.repository.factory.GenericRepository;
 
 public interface CodeDao extends GenericRepository<Code, Long> {
 
+	public Code findByCodeName(String codeName);
 }

@@ -13,14 +13,13 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import com.hkesports.matchticker.model.basic.BasicApiInfo;
+import com.hkesports.matchticker.model.basic.BasicAuditModel;
 
 /**
  * @author manboyu
@@ -28,26 +27,23 @@ import com.hkesports.matchticker.model.basic.BasicApiInfo;
  */
 @Entity
 @Table(name = "schedule_game")
-public class ScheduleGame extends BasicApiInfo {
+public class ScheduleGame extends BasicAuditModel {
 
 	private static final long serialVersionUID = 1L;
 
+	private Game game;
+	private Schedule schedule;
 	private Date dateTime;
 	private Long winnerId;
 	private Short maxGames;
 	private Short gameNumber;
 	private Integer gameLength;
-	private String platformId;
-	private Long platformGameId;
-	private Short noVods;
-	private String legsUrl;
 	private Short lobbyType;
 	private Integer humanPlayers;
 	private Integer positiveVotes;
 	private Integer negativeVote;
 	private Short gameMode;
 	private Integer firstBloodTime;
-	private Schedule schedule;
 	private List<LiveStreams> liveStreams = new ArrayList<>();
 	private Set<ScheduleGameDetail> scheduleGameDetails = new HashSet<>();
 	private List<ScheduleGamePlayerDetail> scheduleGamePlayerDetails = new ArrayList<>();
@@ -55,8 +51,27 @@ public class ScheduleGame extends BasicApiInfo {
 	private Integer tournamentRound;
 	private Long gameCreation;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "date_time", nullable = true)
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name = "game_id", nullable = true, columnDefinition="BIGINT(20)", referencedColumnName = "id")
+	public Game getGame() {
+		return game;
+	}
+	
+	public void setGame(Game game) {
+		this.game = game;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "schedule_id", columnDefinition = "BIGINT(20)", nullable = true)
+	public Schedule getSchedule() {
+		return schedule;
+	}
+
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
+	}
+	
+	@Column(name = "date_time", columnDefinition = "DATETIME", nullable = true)
 	public Date getDateTime() {
 		return dateTime;
 	}
@@ -99,42 +114,6 @@ public class ScheduleGame extends BasicApiInfo {
 
 	public void setGameLength(Integer gameLength) {
 		this.gameLength = gameLength;
-	}
-
-	@Column(name = "platform_id", length = 50, nullable = true)
-	public String getPlatformId() {
-		return platformId;
-	}
-
-	public void setPlatformId(String platformId) {
-		this.platformId = platformId;
-	}
-
-	@Column(name = "platform_game_id", columnDefinition = "BIGINT(20)", nullable = true)
-	public Long getPlatformGameId() {
-		return platformGameId;
-	}
-
-	public void setPlatformGameId(Long platformGameId) {
-		this.platformGameId = platformGameId;
-	}
-
-	@Column(name = "no_vods", columnDefinition = "SMALLINT(6)", nullable = true)
-	public Short getNoVods() {
-		return noVods;
-	}
-
-	public void setNoVods(Short noVods) {
-		this.noVods = noVods;
-	}
-
-	@Column(name = "leg_url", length = 255, nullable = true)
-	public String getLegsUrl() {
-		return legsUrl;
-	}
-
-	public void setLegsUrl(String legsUrl) {
-		this.legsUrl = legsUrl;
 	}
 
 	@Column(name = "lobby_type", columnDefinition = "SMALLINT(6)", nullable = true)
@@ -190,6 +169,25 @@ public class ScheduleGame extends BasicApiInfo {
 	public void setFirstBloodTime(Integer firstBloodTime) {
 		this.firstBloodTime = firstBloodTime;
 	}
+
+	
+	@Column(name = "tournament_round", columnDefinition = "INT(11)", nullable = true)
+	public Integer getTournamentRound() {
+		return tournamentRound;
+	}
+
+	public void setTournamentRound(Integer tournamentRound) {
+		this.tournamentRound = tournamentRound;
+	}
+	
+	@Column(name = "game_creation", columnDefinition = "BIGINT(20)", nullable = true)
+	public Long getGameCreation() {
+		return gameCreation;
+	}
+
+	public void setGameCreation(Long gameCreation) {
+		this.gameCreation = gameCreation;
+	}
 	
 	@OneToMany(mappedBy = "scheduleGame", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public List<LiveStreams> getLiveStreams() {
@@ -227,31 +225,15 @@ public class ScheduleGame extends BasicApiInfo {
 		this.scheduleGamePlayerItems = scheduleGamePlayerItems;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "schedule_id", columnDefinition = "BIGINT(20)", nullable = true)
-	public Schedule getSchedule() {
-		return schedule;
-	}
-
-	public void setSchedule(Schedule schedule) {
-		this.schedule = schedule;
-	}
-
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 		.append("id", getId())
-		.append("apiId", getApiId())
-		.append("gameType", getGameType())
 		.append("dateTime", getDateTime())
 		.append("winnerId", getWinnerId())
 		.append("maxGames", getMaxGames())
 		.append("gameNumber", getGameNumber())
 		.append("gameLength", getGameLength())
-		.append("platformId", getPlatformId())
-		.append("platformGameId", getPlatformGameId())
-		.append("noVods", getNoVods())
-		.append("legsUrl", getLegsUrl())
 		.append("lobbyType", getLobbyType())
 		.append("humanPlayers", getHumanPlayers())
 		.append("positiveVotes", getPositiveVotes())
@@ -259,23 +241,5 @@ public class ScheduleGame extends BasicApiInfo {
 		.append("gameMode", getGameMode())
 		.append("firstBloodTime", getFirstBloodTime())
 		.build();
-	}
-	
-	@Column(name = "tournament_round", columnDefinition = "INT(11)", nullable = true)
-	public Integer getTournamentRound() {
-		return tournamentRound;
-	}
-
-	public void setTournamentRound(Integer tournamentRound) {
-		this.tournamentRound = tournamentRound;
-	}
-	
-	@Column(name = "game_creation", columnDefinition = "BIGINT(20)", nullable = true)
-	public Long getGameCreation() {
-		return gameCreation;
-	}
-
-	public void setGameCreation(Long gameCreation) {
-		this.gameCreation = gameCreation;
 	}
 }

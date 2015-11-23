@@ -21,11 +21,20 @@ public class BasicVo implements Serializable {
 		this.statusCode = statusCode;
 	}
 
+	public BasicVo(StatusCodeEnum statusCode) {
+		super();
+		this.statusCode = statusCode.getValue();
+	}
+	
 	public int getStatusCode() {
 		return statusCode;
 	}
 
 	public void setStatusCode(int statusCode) {
 		this.statusCode = statusCode;
+	}
+	
+	public void setStatusCode(StatusCodeEnum statusCode) {
+		this.statusCode = statusCode.getValue();
 	}
 }

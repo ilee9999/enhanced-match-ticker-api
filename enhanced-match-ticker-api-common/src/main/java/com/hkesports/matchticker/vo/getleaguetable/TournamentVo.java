@@ -8,7 +8,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hkesports.matchticker.utils.Const;
 
@@ -20,35 +19,36 @@ public class TournamentVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long tournamentID; // tourament.id
-	private String tournamentName; // tourament.touramentName
-	private String tournamentShortName; // tourament.touramentShortName
-	private String tournamentSiteURL; // tournament.touramentSiteUrl
-	private Long gameID; // Game.id
+	private Long tournamentID; 				// tournament.id
+	private String tournamentName; 			// tournament.tournamentName
+	private String tournamentShortName; 	// tournament.tournamentShortName
+	private String tournamentSiteURL; 		// tournament.tournamentSiteUrl
+	private Long gameID; 					// Game.id
 	private Date tournamentFromDate;
 	private Date tournamentToDate;
-	private Integer team = 1;
-	private String enGameName; // Game.enGameName
-	private String twGameName; // Game.twGameName
-	private String gameURL; // Game.gameUrl
-	private Long matchID; // Schedule.id
-	private List<TeamVo> teams;
+	private Boolean team; 					//Game.team
+	private String enGameName; 				// Game.enGameName
+	private String twGameName; 				// Game.twGameName
+	private String gameURL; 				// Game.gameUrl
+	// private Long matchID; 					// Schedule.id
+	private List<ContestantsVo> Contestants;
 
 	public TournamentVo(Long tournamentID, String tournamentName,
 			String tournamentShortName, String tournamentSiteURL, Long gameID,
 			Date tournamentFromDate, Date tournamentToDate, String enGameName, 
-			String twGameName, String gameURL, Long matchID) {
+			String twGameName, String gameURL, Boolean team) {
 		this.tournamentID = tournamentID;
 		this.tournamentName = tournamentName;
 		this.tournamentShortName = tournamentShortName;
 		this.tournamentSiteURL = tournamentSiteURL;
 		this.gameID = gameID;
+		this.team = team;
 		this.tournamentFromDate = tournamentFromDate;
 		this.tournamentToDate = tournamentToDate;
 		this.enGameName = enGameName;
 		this.twGameName = twGameName;
 		this.gameURL = gameURL;
-		this.matchID = matchID;
+//		this.matchID = matchID;
 	}
 
 	public Long getTournamentID() {
@@ -109,11 +109,11 @@ public class TournamentVo implements Serializable {
 		this.tournamentToDate = tournamentToDate;
 	}
 
-	public Integer getTeam() {
+	public Boolean getTeam() {
 		return team;
 	}
 
-	public void setTeam(Integer team) {
+	public void setTeam(Boolean team) {
 		this.team = team;
 	}
 
@@ -141,22 +141,22 @@ public class TournamentVo implements Serializable {
 		this.gameURL = gameURL;
 	}
 
-	@JsonIgnore
-	public Long getMatchID() {
-		return matchID;
+//	@JsonIgnore
+//	public Long getMatchID() {
+//		return matchID;
+//	}
+//
+//	public void setMatchID(Long matchID) {
+//		this.matchID = matchID;
+//	}
+
+	@JsonProperty("Contestants")
+	public List<ContestantsVo> getContestants() {
+		return Contestants;
 	}
 
-	public void setMatchID(Long matchID) {
-		this.matchID = matchID;
-	}
-
-	@JsonProperty("Teams")
-	public List<TeamVo> getTeams() {
-		return teams;
-	}
-
-	public void setTeams(List<TeamVo> teams) {
-		this.teams = teams;
+	public void setContestants(List<ContestantsVo> Contestants) {
+		this.Contestants = Contestants;
 	}
 
 	@Override

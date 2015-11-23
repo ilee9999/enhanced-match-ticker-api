@@ -7,12 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import com.hkesports.matchticker.model.basic.BasicApiInfo;
+import com.hkesports.matchticker.model.basic.BasicModel;
 
 /**
  * @author manboyu
@@ -20,10 +21,12 @@ import com.hkesports.matchticker.model.basic.BasicApiInfo;
  */
 @Entity
 @Table(name = "spell_data")
-public class SpellData extends BasicApiInfo {
+public class SpellData extends BasicModel {
 
 	private static final long serialVersionUID = 1L;
 
+	private Game game;
+	private Long apiId;
 	private Hero hero;
 	private String description;
 	private String name;
@@ -34,6 +37,25 @@ public class SpellData extends BasicApiInfo {
 	private Integer imageH;
 	private String version;
 	private Date expireDate;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name = "game_id", nullable = true, columnDefinition="BIGINT(20)", referencedColumnName = "id")
+	public Game getGame() {
+		return game;
+	}
+	
+	public void setGame(Game game) {
+		this.game = game;
+	}
+	
+	@Column(name = "api_id", columnDefinition = "BIGINT(20)", nullable = true)
+	public Long getApiId() {
+		return apiId;
+	}
+
+	public void setApiId(Long apiId) {
+		this.apiId = apiId;
+	}
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="hero_id", columnDefinition="BIGINT(20)", nullable=true)
@@ -131,7 +153,6 @@ public class SpellData extends BasicApiInfo {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 		.append("id", getId())
 		.append("apiId", getApiId())
-		.append("gameType", getGameType())
 		.append("description", getDescription())
 		.append("name", getName())
 		.append("enName", getEnName())

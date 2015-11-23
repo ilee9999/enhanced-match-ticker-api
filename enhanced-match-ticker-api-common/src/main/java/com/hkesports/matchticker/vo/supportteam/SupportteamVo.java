@@ -8,9 +8,9 @@ public class SupportteamVo extends BasicVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long teamASupportCount;
+	private Long contestantASupportCount;
 	
-	private Long teamBSupportCount;
+	private Long contestantBSupportCount;
 
 	public SupportteamVo() {}
 	
@@ -18,25 +18,25 @@ public class SupportteamVo extends BasicVo implements Serializable {
 		super(statusCode);
 	}
 	
-	public SupportteamVo(int statusCode, Long teamASupportCount, Long teamBSupportCount) {
+	public SupportteamVo(int statusCode, Long contestantASupportCount, Long contestantBSupportCount) {
 		super(statusCode);
-		this.teamASupportCount = teamASupportCount;
-		this.teamBSupportCount = teamBSupportCount;
+		this.contestantASupportCount = contestantASupportCount;
+		this.contestantBSupportCount = contestantBSupportCount;
 	}
 	
-	public Long getTeamASupportCount() {
-		return teamASupportCount;
+	public Long getContestantASupportCount() {
+		return contestantASupportCount;
 	}
 
-	public void setTeamASupportCount(Long teamASupportCount) {
-		this.teamASupportCount = teamASupportCount;
+	public void setContestantASupportCount(Long contestantASupportCount) {
+		this.contestantASupportCount = contestantASupportCount;
 	}
 
-	public Long getTeamBSupportCount() {
-		return teamBSupportCount;
+	public Long getContestantBSupportCount() {
+		return contestantBSupportCount;
 	}
 
-	public void setTeamBSupportCount(Long teamBSupportCount) {
-		this.teamBSupportCount = teamBSupportCount;
+	public void setContestantBSupportCount(Long contestantBSupportCount) {
+		this.contestantBSupportCount = contestantBSupportCount;
 	}
 }

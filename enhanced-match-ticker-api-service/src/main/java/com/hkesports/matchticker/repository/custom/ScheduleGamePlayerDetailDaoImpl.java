@@ -45,43 +45,49 @@ public class ScheduleGamePlayerDetailDaoImpl extends BasicDaoImpl implements Sch
 			"	s1.total_time_crowd_control_dealt as totalTimeCrowdControlDealt, s1.champ_Level as champLevel, " +
 			"	s1.vision_Wards_Bought_In_Game as visionWardsBoughtInGame, s1.sight_Wards_Bought_In_Game as sightWardsBoughtInGame, " +
 			"	s1.wards_Placed as wardsPlaced, s1.wards_Killed as wardsKilled, " +
-			"	hero.item_id as championID, " +
-			"	spell0.item_id as spell0, " +
-			"	spell1.item_id as spell1, " +
-			"	item0.item_id as items0, item1.item_id as items1, item2.item_id as items2, " +
-			"	item3.item_id as items3, item4.item_id as items4, item5.item_id as items5, item6.item_id as items6 " +
-			"from schedule_game_player_detail  s1 " +
+			"	h.name as championName, hero.item_url as championURL, " +
+			"	spell0.item_url as spell0, " +
+			"	spell1.item_url as spell1, " +
+			"	item0.item_url as items0, item1.item_url as items1, item2.item_url as items2, " +
+			"	item3.item_url as items3, item4.item_url as items4, item5.item_url as items5, item6.item_url as items6, " +
+			"	player_slot as playerSlot, gold_per_min as goldPerMin, xp_per_min as xpPerMin, " +
+			"	hero_damage as heroDamage, tower_damage as towerDamage, hero_healing as heroHealing " +
+			"from schedule_game_detail sgd " +
+			"inner join schedule_game sg on sgd.schedule_game_id = sg.id " +
+			"inner join schedule_game_player_detail s1 on sgd.id = s1.schedule_game_detail_id " +
 			"left join player p on p.id = s1.player_id " +
 			"left join schedule_game_player_items as hero on s1.player_id = hero.player_id  " +
-			"	and hero.schedule_game_id = s1.schedule_game_id and hero.item_type = :HERO " +
+			"	and hero.schedule_game_id = sg.id and hero.item_type = :HERO " +
+			"left join hero as h on hero.item_id = h.api_id  " +
+			"	and h.game_id = sg.game_id " +
 			"left join schedule_game_player_items as spell0 on s1.player_id = spell0.player_id  " +
-			"	and spell0.schedule_game_id = s1.schedule_game_id  " +
+			"	and spell0.schedule_game_id = sg.id  " +
 			"   and spell0.item_type = :SPELL and spell0.sequence = 0 " +
 			"left join schedule_game_player_items as spell1 on s1.player_id = spell1.player_id  " +
-			"	and spell1.schedule_game_id = s1.schedule_game_id  " +
+			"	and spell1.schedule_game_id = sg.id  " +
 			"   and spell1.item_type = :SPELL and spell1.sequence = 1 " +
 			"left join schedule_game_player_items as item0 on s1.player_id = item0.player_id  " +
-			"	and item0.schedule_game_id = s1.schedule_game_id  " +
+			"	and item0.schedule_game_id = sg.id  " +
 			"   and item0.item_type = :EQUIP and item0.sequence = 0 " +
 			"left join schedule_game_player_items as item1 on s1.player_id = item1.player_id  " +
-			"	and item1.schedule_game_id = s1.schedule_game_id  " +
+			"	and item1.schedule_game_id = sg.id  " +
 			"   and item1.item_type = :EQUIP and item1.sequence = 1 " +
 			"left join schedule_game_player_items as item2 on s1.player_id = item2.player_id  " +
-			"	and item2.schedule_game_id = s1.schedule_game_id  " +
+			"	and item2.schedule_game_id = sg.id  " +
 			"   and item2.item_type = :EQUIP and item2.sequence = 2 " +
 			"left join schedule_game_player_items as item3 on s1.player_id = item3.player_id  " +
-			"	and item3.schedule_game_id = s1.schedule_game_id  " +
+			"	and item3.schedule_game_id = sg.id  " +
 			"   and item3.item_type = :EQUIP and item3.sequence = 3 " +
 			"left join schedule_game_player_items as item4 on s1.player_id = item4.player_id  " +
-			"	and item4.schedule_game_id = s1.schedule_game_id  " +
+			"	and item4.schedule_game_id = sg.id  " +
 			"   and item4.item_type = :EQUIP and item4.sequence = 4 " +
 			"left join schedule_game_player_items as item5 on s1.player_id = item5.player_id  " +
-			"	and item5.schedule_game_id = s1.schedule_game_id  " +
+			"	and item5.schedule_game_id = sg.id  " +
 			"   and item5.item_type = :EQUIP and item5.sequence = 5 " +
 			"left join schedule_game_player_items as item6 on s1.player_id = item6.player_id  " +
-			"	and item6.schedule_game_id = s1.schedule_game_id  " +
+			"	and item6.schedule_game_id = sg.id  " +
 			"   and item6.item_type = :EQUIP and item6.sequence = 6 " +
-			"where s1.schedule_game_detail_id = :gameDetailId";
+			"where sgd.id = :gameDetailId";
 	
 	
 	@SuppressWarnings("unchecked")
@@ -98,67 +104,4 @@ public class ScheduleGamePlayerDetailDaoImpl extends BasicDaoImpl implements Sch
 		queryObj.setParameter("HERO", GameItemTypeEnum.HERO.toString());
 		return queryObj.list();
 	}
-
-	/*
-	private void addGameTeamPlayerVoScalars(SQLQuery queryObj) {
-		queryObj.addScalar("playerID", LongType.INSTANCE);
-		queryObj.addScalar("playerName", StringType.INSTANCE);
-		queryObj.addScalar("playerPhotoURLThumbnail", StringType.INSTANCE);
-		queryObj.addScalar("playerPhotoURLLarge", StringType.INSTANCE);
-		queryObj.addScalar("playerPhotoURLOriginal", StringType.INSTANCE);
-		queryObj.addScalar("kills", IntegerType.INSTANCE);
-		queryObj.addScalar("deaths", IntegerType.INSTANCE);
-		queryObj.addScalar("assists", IntegerType.INSTANCE);
-		queryObj.addScalar("endLevel", IntegerType.INSTANCE);
-		queryObj.addScalar("minionsKilled", IntegerType.INSTANCE);
-		queryObj.addScalar("totalGold", IntegerType.INSTANCE);
-		queryObj.addScalar("spell0", LongType.INSTANCE);
-		queryObj.addScalar("spell1", LongType.INSTANCE);
-		queryObj.addScalar("items0", LongType.INSTANCE);
-		queryObj.addScalar("items1", LongType.INSTANCE);
-		queryObj.addScalar("items2", LongType.INSTANCE);
-		queryObj.addScalar("items3", LongType.INSTANCE);
-		queryObj.addScalar("items4", LongType.INSTANCE);
-		queryObj.addScalar("items5", LongType.INSTANCE);
-		queryObj.addScalar("championID", LongType.INSTANCE);
-		queryObj.addScalar("largestKillingSpree", IntegerType.INSTANCE);
-		queryObj.addScalar("largestMultiKill", IntegerType.INSTANCE);
-		queryObj.addScalar("killingSprees", IntegerType.INSTANCE);
-		queryObj.addScalar("longestTimeSpentLiving", IntegerType.INSTANCE);
-		queryObj.addScalar("doubleKills", IntegerType.INSTANCE);
-		queryObj.addScalar("tripleKills", IntegerType.INSTANCE);
-		queryObj.addScalar("quadraKills", IntegerType.INSTANCE);
-		queryObj.addScalar("pentaKills", IntegerType.INSTANCE);
-		queryObj.addScalar("unrealKills", IntegerType.INSTANCE);
-		queryObj.addScalar("totalDamageDealt", IntegerType.INSTANCE);
-		queryObj.addScalar("magicDamageDealt", IntegerType.INSTANCE);
-		queryObj.addScalar("physicalDamageDealt", IntegerType.INSTANCE);
-		queryObj.addScalar("trueDamageDealt", IntegerType.INSTANCE);
-		queryObj.addScalar("largestCriticalStrike", IntegerType.INSTANCE);
-		queryObj.addScalar("totalDamageDealtToChampions", IntegerType.INSTANCE);
-		queryObj.addScalar("magicDamageDealtToChampions", IntegerType.INSTANCE);
-		queryObj.addScalar("physicalDamageDealtToChampions", IntegerType.INSTANCE);
-		queryObj.addScalar("trueDamageDealtToChampions", IntegerType.INSTANCE);
-		queryObj.addScalar("totalHeal", IntegerType.INSTANCE);
-		queryObj.addScalar("totalUnitsHealed", IntegerType.INSTANCE);
-		queryObj.addScalar("totalDamageTaken", IntegerType.INSTANCE);
-		queryObj.addScalar("magicalDamageTaken", IntegerType.INSTANCE);
-		queryObj.addScalar("physicalDamageTaken", IntegerType.INSTANCE);
-		queryObj.addScalar("trueDamageTaken", IntegerType.INSTANCE);
-		queryObj.addScalar("goldEarned", IntegerType.INSTANCE);
-		queryObj.addScalar("goldSpent", IntegerType.INSTANCE);
-		queryObj.addScalar("turretKills", IntegerType.INSTANCE);
-		queryObj.addScalar("inhibitorKills", IntegerType.INSTANCE);
-		queryObj.addScalar("totalMinionsKilled", IntegerType.INSTANCE);
-		queryObj.addScalar("neutralMinionsKilled", IntegerType.INSTANCE);
-		queryObj.addScalar("neutralMinionsKilledTeamJungle", IntegerType.INSTANCE);
-		queryObj.addScalar("neutralMinionsKilledEnemyJungle", IntegerType.INSTANCE);
-		queryObj.addScalar("totalTimeControlDealt", IntegerType.INSTANCE);
-		queryObj.addScalar("champLevel", IntegerType.INSTANCE);
-		queryObj.addScalar("visionWardsBoughtInGame", IntegerType.INSTANCE);
-		queryObj.addScalar("sightWardsBoughtInGame", IntegerType.INSTANCE);
-		queryObj.addScalar("wardsPlaced", IntegerType.INSTANCE);
-		queryObj.addScalar("wardsKilled", IntegerType.INSTANCE);
-	}
-	*/
 }

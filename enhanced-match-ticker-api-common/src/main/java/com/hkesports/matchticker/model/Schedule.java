@@ -6,27 +6,30 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import com.hkesports.matchticker.model.basic.BasicApiInfo;
+import com.hkesports.matchticker.enums.ScheduleStatusEnum;
+import com.hkesports.matchticker.model.basic.BasicAuditModel;
 
 @Entity
 @Table(name = "schedule")
-public class Schedule extends BasicApiInfo {
+public class Schedule extends BasicAuditModel {
 	
 	private static final long serialVersionUID = 1L;
 
-	private Boolean highlight = false;
+	private Game game;
+	private Tournament tournament;
+	private String tournamentName;
+	private Boolean highlight = Boolean.FALSE;
 	private String teamAName;
 	private Long teamAId;
 	private String playerAName;
@@ -37,21 +40,45 @@ public class Schedule extends BasicApiInfo {
 	private Long bSideSupportCount;
 	private Date startTime;
 	private Date endTime;
-	private Tourament tourament;
-	private String touramentName;
-	private Game game;
 	private String matchLiveUrl;
 	private String results;
 	private String matchArchiveUrl;
-	private Boolean display;
-	private String name;
-	private String namePublic;
-	private Short isFinished;
-	private Short noVods;
-	private String season;
-	private Short published;
-	private Long winner;
+	private Date dateTime;
+	private Long winnerId;
+	private Short maxGames;
+	private Boolean isLive;
+	private String isFinished;
+	private ScheduleStatusEnum status;
 	private List<ScheduleGame> scheduleGames = new ArrayList<>();
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name = "game_id", nullable = true, columnDefinition="BIGINT(20)", referencedColumnName = "id")
+	public Game getGame() {
+		return game;
+	}
+	
+	public void setGame(Game game) {
+		this.game = game;
+	}
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "tournament_id", nullable = true, columnDefinition="BIGINT(20)", referencedColumnName = "id")
+	public Tournament getTournament() {
+		return tournament;
+	}
+
+	public void setTournament(Tournament tournament) {
+		this.tournament = tournament;
+	}
+	
+	@Column(name = "tournament_name", length = 255, nullable = true)
+	public String getTournamentName() {
+		return tournamentName;
+	}
+	
+	public void setTournamentName(String tournamentName) {
+		this.tournamentName = tournamentName;
+	}
 	
 	@Column(name = "highlight", columnDefinition = "TINYINT", nullable = false)
 	public Boolean getHighlight() {
@@ -79,7 +106,7 @@ public class Schedule extends BasicApiInfo {
 	public void setTeamAId(Long teamAId) {
 		this.teamAId = teamAId;
 	}
-	
+
 	@Column(name="player_a_name", length=64, nullable = true)
 	public String getPlayerAName() {
 		return playerAName;
@@ -134,8 +161,7 @@ public class Schedule extends BasicApiInfo {
 		this.bSideSupportCount = bSideSupportCount;
 	}
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="start_time", nullable=false)
+	@Column(name="start_time", columnDefinition = "DATETIME", nullable=false)
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -144,33 +170,13 @@ public class Schedule extends BasicApiInfo {
 		this.startTime = startTime;
 	}
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "end_time", nullable = true)
+	@Column(name = "end_time", columnDefinition = "DATETIME", nullable = true)
 	public Date getEndTime() {
 		return endTime;
 	}
 	
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
-	}
-	
-	@Column(name = "tourament_name", length = 255, nullable = true)
-	public String getTouramentName() {
-		return touramentName;
-	}
-	
-	public void setTouramentName(String touramentName) {
-		this.touramentName = touramentName;
-	}
-	
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "game_id", nullable = true, columnDefinition="BIGINT(20)", referencedColumnName = "id")
-	public Game getGame() {
-		return game;
-	}
-	
-	public void setGame(Game game) {
-		this.game = game;
 	}
 	
 	@Column(name="match_live_url", length=2048, nullable = true)
@@ -200,78 +206,6 @@ public class Schedule extends BasicApiInfo {
 		this.matchArchiveUrl = matchArchiveUrl;
 	}
 	
-	@Column(name="display", columnDefinition="TINYINT", nullable = true)
-	public Boolean getDisplay() {
-		return display;
-	}
-	
-	public void setDisplay(Boolean display) {
-		this.display = display;
-	}
-	
-	@Column(name="name", length=255, nullable = true)
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@Column(name="name_public", length=255, nullable = true)
-	public String getNamePublic() {
-		return namePublic;
-	}
-	
-	public void setNamePublic(String namePublic) {
-		this.namePublic = namePublic;
-	}
-	
-	@Column(name="is_finished", columnDefinition="SMALLINT(6)", nullable = true)
-	public Short getIsFinished() {
-		return isFinished;
-	}
-	
-	public void setIsFinished(Short isFinished) {
-		this.isFinished = isFinished;
-	}
-	
-	@Column(name="no_vods", columnDefinition="SMALLINT(6)", nullable = true)
-	public Short getNoVods() {
-		return noVods;
-	}
-	
-	public void setNoVods(Short noVods) {
-		this.noVods = noVods;
-	}
-	
-	@Column(name="season", length=50, nullable = true)
-	public String getSeason() {
-		return season;
-	}
-	
-	public void setSeason(String season) {
-		this.season = season;
-	}
-	
-	@Column(name="published", columnDefinition="SMALLINT(6)", nullable = true)
-	public Short getPublished() {
-		return published;
-	}
-	
-	public void setPublished(Short published) {
-		this.published = published;
-	}
-	
-	@Column(name="winner", columnDefinition="BIGINT(20)", nullable = true)
-	public Long getWinner() {
-		return winner;
-	}
-	
-	public void setWinner(Long winner) {
-		this.winner = winner;
-	}
-	
 	@OneToMany(mappedBy = "schedule", fetch = FetchType.LAZY)
 	public List<ScheduleGame> getScheduleGames() {
 		return scheduleGames;
@@ -281,22 +215,65 @@ public class Schedule extends BasicApiInfo {
 		this.scheduleGames = scheduleGames;
 	}
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "tourament_id", nullable = true, columnDefinition="BIGINT(20)", referencedColumnName = "id")
-	public Tourament getTourament() {
-		return tourament;
+	@Column(name =" date_time", columnDefinition = "DATETIME", nullable = true)
+	public Date getDateTime() {
+		return dateTime;
+	}
+	
+	public void setDateTime(Date dateTime) {
+		this.dateTime = dateTime;
+	}
+	
+	@Column(name = "winner_id", columnDefinition = "BIGINT(20)", nullable = true)
+	public Long getWinnerId() {
+		return winnerId;
+	}
+	
+	public void setWinnerId(Long winnerId) {
+		this.winnerId = winnerId;
+	}
+	
+	@Column(name="max_games", columnDefinition="SMALLINT(6)", nullable=true)
+	public Short getMaxGames() {
+		return maxGames;
+	}
+	
+	public void setMaxGames(Short maxGames) {
+		this.maxGames = maxGames;
+	}
+	
+	@Column(name = "is_live", columnDefinition = "TINYINT(4)", nullable = true)
+	public Boolean getIsLive() {
+		return isLive;
+	}
+	
+	public void setIsLive(Boolean isLive) {
+		this.isLive = isLive;
+	}
+	
+	@Column(name = "is_finished", length = 10, nullable = true)
+	public String getIsFinished() {
+		return isFinished;
+	}
+	
+	public void setIsFinished(String isFinished) {
+		this.isFinished = isFinished;
+	}
+	
+	@Enumerated
+	@Column(name = "status", columnDefinition = "TINYINT(4)", nullable = true)
+	public ScheduleStatusEnum getStatus() {
+		return status;
 	}
 
-	public void setTourament(Tourament tourament) {
-		this.tourament = tourament;
+	public void setStatus(ScheduleStatusEnum status) {
+		this.status = status;
 	}
-
+	
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 		.append("id", getId())
-		.append("apiId", getApiId())
-		.append("gameType", getGameType())
 		.append("highlight", getHighlight())
 		.append("teamAName", getTeamAName())
 		.append("playerAName", getPlayerAName())
@@ -306,21 +283,13 @@ public class Schedule extends BasicApiInfo {
 		.append("bSideSupportCount", getbSideSupportCount())
 		.append("startTime", getStartTime())
 		.append("endTime", getEndTime())
-		.append("touramentName", getTouramentName())
+		.append("tournamentName", getTournamentName())
 		.append("game", getGame())
 		.append("matchLiveUrl", getMatchLiveUrl())
 		.append("results", getResults())
 		.append("matchArchiveUrl", getMatchArchiveUrl())
-		.append("display", getDisplay())
-		.append("name", getName())
-		.append("namePublic", getNamePublic())
-		.append("isFinished", getIsFinished())
-		.append("noVods", getNoVods())
-		.append("season", getSeason())
-		.append("published", getPublished())
-		.append("season", getSeason())
-		.append("published", getPublished())
-		.append("winner", getWinner())
+		.append("dateTime", getDateTime())
+		.append("maxGames", getMaxGames())
 		.build();
 	}
 }

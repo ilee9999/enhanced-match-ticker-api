@@ -1,7 +1,9 @@
 package com.hkesports.matchticker.model.basic;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
+@MappedSuperclass
 public class BasicAuditModel extends BasicModel {
 
 	private static final long serialVersionUID = 1L;
@@ -9,7 +11,7 @@ public class BasicAuditModel extends BasicModel {
 	private String createBy;
 	private String updateBy;
 
-	@Column(name = "create_by", length = 20, nullable = true)
+	@Column(name = "create_by", length = 255, nullable = true)
 	public String getCreateBy() {
 		return createBy;
 	}
@@ -18,7 +20,7 @@ public class BasicAuditModel extends BasicModel {
 		this.createBy = createBy;
 	}
 
-	@Column(name = "update_by", length = 20, nullable = true)
+	@Column(name = "update_by", length = 255, nullable = true)
 	public String getUpdateBy() {
 		return updateBy;
 	}

@@ -25,6 +25,7 @@ public class ScheduleGameDetail extends BasicModel {
 	private Team team;
 	private ScheduleGame scheduleGame;
 	private GameWinTypeEnum win;
+	private Long guessCount;
 	private Boolean firstBlood;
 	private Boolean firstTower;
 	private Boolean firstInhibitor;
@@ -215,5 +216,14 @@ public class ScheduleGameDetail extends BasicModel {
 
 	public void setDominionVictoryScore(Integer dominionVictoryScore) {
 		this.dominionVictoryScore = dominionVictoryScore;
+	}
+	
+	@Column(name = "guess_count", columnDefinition = "BIGINT(20)", nullable = true)
+	public Long getGuessCount() {
+		return guessCount;
+	}
+
+	public void setGuessCount(Long guessCount) {
+		this.guessCount = guessCount;
 	}
 }

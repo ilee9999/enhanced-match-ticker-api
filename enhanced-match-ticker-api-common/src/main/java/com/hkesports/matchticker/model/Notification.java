@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -21,6 +19,7 @@ import com.hkesports.matchticker.model.basic.BasicAuditModel;
  */
 @Entity
 @Table(name = "notification")
+@Deprecated
 public class Notification extends BasicAuditModel {
 
 	private static final long serialVersionUID = 1L;
@@ -52,8 +51,7 @@ public class Notification extends BasicAuditModel {
 		this.message = message;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "start_date", nullable = true)
+	@Column(name = "start_date", columnDefinition = "DATETIME", nullable = true)
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -62,8 +60,7 @@ public class Notification extends BasicAuditModel {
 		this.startDate = startDate;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "end_date", nullable = true)
+	@Column(name = "end_date", columnDefinition = "DATETIME", nullable = true)
 	public Date getEndDate() {
 		return endDate;
 	}

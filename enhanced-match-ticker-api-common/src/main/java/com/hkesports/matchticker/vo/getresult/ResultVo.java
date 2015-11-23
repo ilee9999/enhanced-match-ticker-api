@@ -5,45 +5,43 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hkesports.matchticker.enums.GameTypeEnum;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hkesports.matchticker.utils.Const;
 
 public class ResultVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Integer team = 1;
-	private Long gameID; // Game.id
-	private String enGameName; // Game.enGameName
-	private String twGameName; // Game.twGameName
-	private String gameURL; // Game.gameUrl
+	private Boolean team; 					//Game.team
+	private Long gameID; 					// Game.id
+	private String enGameName; 				// Game.enGameName
+	private String twGameName; 				// Game.twGameName
+	private String gameURL; 				// Game.gameUrl
 
-	private Long matchID; // Schedule.id
-	private Date matchStartTime; // Schedule.startTime
-	private Date matchEndTime; // Schedule.endTime
-	private Date matchDate; // (cut the date portion of the matchStartTime)
+	private Long matchID; 					// Schedule.id
+	private Date matchStartTime; 			// Schedule.startTime
+	private Date matchEndTime; 				// Schedule.endTime
+	private Date matchDate; 				// (cut the date portion of the matchStartTime)
 
-	private Long tournamentID; // tourament.id
-	private String tournamentName; // tourament.touramentName
-	private String tournamentShortName; // tourament.touramentShortName
-	private String tournamentSiteURL; // tournament.touramentSiteUrl
-	private String matchResult; // (string consisting the match result e.g. 1:1, 2:2)
+	private Long tournamentID; 				// tournament.id
+	private String tournamentName; 			// tournament.tournamentName
+	private String tournamentShortName; 	// tournament.tournamentShortName
+	private String tournamentSiteURL; 		// tournament.tournamentSiteUrl
+	private String matchResult; 			// (string consisting the match result e.g. 1:1, 2:2)
 
-	private String matchArchiveURL; // Schedule.matchArchiveUrl
+	private String matchArchiveURL; 		// Schedule.matchArchiveUrl
 
-	private List<TeamVo> Teams;
-	private transient GameTypeEnum gameType;
+	private List<ContestantsVo> Contestants;
 	
-	
-	public ResultVo(Long gameID, String enGameName, String twGameName, String gameURL, Long matchID,
+	public ResultVo(Long gameID, String enGameName, String twGameName, String gameURL, Boolean team, Long matchID,
 			Date matchStartTime, Date matchEndTime, Date matchDate, Long tournamentID, String tournamentName,
-			String tournamentShortName, String tournamentSiteURL, String matchResult, String matchArchiveURL, GameTypeEnum gameType) {
+			String tournamentShortName, String tournamentSiteURL, String matchResult, String matchArchiveURL) {
 		super();
 		this.gameID = gameID;
 		this.enGameName = enGameName;
 		this.twGameName = twGameName;
 		this.gameURL = gameURL;
+		this.team = team;
 		this.matchID = matchID;
 		this.matchStartTime = matchStartTime;
 		this.matchEndTime = matchEndTime;
@@ -54,14 +52,13 @@ public class ResultVo implements Serializable {
 		this.tournamentSiteURL = tournamentSiteURL;
 		this.matchResult = matchResult;
 		this.matchArchiveURL = matchArchiveURL;
-		this.gameType = gameType;
 	}
 
-	public Integer getTeam() {
+	public Boolean getTeam() {
 		return team;
 	}
 
-	public void setTeam(Integer team) {
+	public void setTeam(Boolean team) {
 		this.team = team;
 	}
 
@@ -180,21 +177,12 @@ public class ResultVo implements Serializable {
 		this.matchArchiveURL = matchArchiveURL;
 	}
 
-	public List<TeamVo> getTeams() {
-		return Teams;
+	@JsonProperty(value="Contestants")
+	public List<ContestantsVo> getContestants() {
+		return this.Contestants;
 	}
 
-	public void setTeams(List<TeamVo> teams) {
-		Teams = teams;
+	public void setContestants(List<ContestantsVo> Contestants) {
+		this.Contestants = Contestants;
 	}
-
-	@JsonIgnore
-	public GameTypeEnum getGameType() {
-		return gameType;
-	}
-
-	public void setGameType(GameTypeEnum gameType) {
-		this.gameType = gameType;
-	}
-	
 }

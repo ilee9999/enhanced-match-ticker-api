@@ -15,7 +15,7 @@ public class GetleaguetableVo extends BasicVo {
 
 	private List<TournamentVo> tournaments;
 
-	@JsonProperty("tournaments")
+	@JsonProperty("Tournaments")
 	public List<TournamentVo> getTournaments() {
 		return tournaments;
 	}

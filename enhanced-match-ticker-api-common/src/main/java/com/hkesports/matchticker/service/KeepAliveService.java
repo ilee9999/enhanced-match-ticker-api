@@ -9,6 +9,7 @@ import com.hkesports.matchticker.vo.keepalive.KeepaliveVo;
  * @author manboyu
  *
  */
+@Deprecated
 public interface KeepAliveService {
 
 	/**

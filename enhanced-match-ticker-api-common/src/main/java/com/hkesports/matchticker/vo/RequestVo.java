@@ -1,29 +1,54 @@
 package com.hkesports.matchticker.vo;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import com.hkesports.matchticker.enums.GameTypeEnum;
 
 public class RequestVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private GameTypeEnum gameID;
+	private String registrationID;
+	private String secretKey;
+	private Long gameID;
+	private String gameName;
 	private Long tournamentID;
+	private String tournamentShortName;
+	private Boolean highlight;
 	private Integer pageNumber;
 	private Integer pageSize;
-	private Map<String, Object> option;
 
-	public GameTypeEnum getGameID() {
+	public String getRegistrationID() {
+		return registrationID;
+	}
+
+	public void setRegistrationID(String registrationID) {
+		this.registrationID = registrationID;
+	}
+
+	public String getSecretKey() {
+		return secretKey;
+	}
+
+	public void setSecretKey(String secretKey) {
+		this.secretKey = secretKey;
+	}
+
+	public Long getGameID() {
 		return gameID;
 	}
 
-	public void setGameID(GameTypeEnum gameID) {
+	public void setGameID(Long gameID) {
 		this.gameID = gameID;
+	}
+
+	public String getGameName() {
+		return gameName;
+	}
+
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
 	}
 
 	public Long getTournamentID() {
@@ -34,95 +59,53 @@ public class RequestVo implements Serializable {
 		this.tournamentID = tournamentID;
 	}
 
+	public String getTournamentShortName() {
+		return tournamentShortName;
+	}
+
+	public void setTournamentShortName(String tournamentShortName) {
+		this.tournamentShortName = tournamentShortName;
+	}
+
+	public Boolean getHighlight() {
+		return highlight;
+	}
+
+	public void setHighlight(Boolean highlight) {
+		this.highlight = highlight;
+	}
+
 	public Integer getPageNumber() {
+		if(pageNumber == null || pageNumber < 0)
+			return 0; // default 0
 		return pageNumber;
 	}
 
 	public void setPageNumber(Integer pageNumber) {
+		/*
+		 * client端 pageNumber 是從1開始, 
+		 * 而hibernate firstResult index是由0開始
+		 * 故實際index是由client傳進來的值-1 
+		 */
+		if(pageNumber != null && pageNumber > 0) {
+			pageNumber--;
+		}
 		this.pageNumber = pageNumber;
 	}
 
+	public Integer getStartIndex() {
+		return getPageNumber() * getPageSize();
+	} 
+	
 	public Integer getPageSize() {
-		return pageSize;
+		if(this.pageSize == null)
+			return 10; // default 10
+		return this.pageSize;
 	}
 
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
 	}
-
-	public Map<String, Object> getOption() {
-		return option;
-	}
-
-	public void setOption(Map<String, Object> option) {
-		this.option = option;
-	}
-
-	public OptionVo getScheduleFilterVo() {
-		if (option == null) {
-			return null;
-		}
-		return new OptionVo((String) option.get("gameName"),
-				(String) option.get("tournamentShortName"),
-				Boolean.valueOf((String) option.get("highlight")), 
-				(String)option.get("sortingField"), 
-				(String)option.get("sortingOrder"));
-	}
-
-	public class OptionVo implements Serializable {
-
-		private static final long serialVersionUID = 1L;
-
-		private String gameName;
-		private String tournamentShortName;
-		private Boolean highlight;
-		private String sortingField;
-		private String sortingOrder;
-		
-		public OptionVo(String gameName, String tournamentShortName, Boolean highlight, String sortingField,
-				String sortingOrder) {
-			this.gameName = gameName;
-			this.tournamentShortName = tournamentShortName;
-			this.highlight = highlight;
-			this.sortingField = sortingField;
-			this.sortingOrder = sortingOrder;
-		}
-
-		public OptionVo(String gameName, String tournamentShortName, Boolean highlight) {
-			this.gameName = gameName;
-			this.tournamentShortName = tournamentShortName;
-			this.highlight = highlight;
-		}
-
-		public String getGameName() {
-			return gameName;
-		}
-
-		public String getTournamentShortName() {
-			return tournamentShortName;
-		}
-
-		public Boolean getHighlight() {
-			return highlight;
-		}
-
-		public String getSortingField() {
-			return sortingField;
-		}
-
-		public void setSortingField(String sortingField) {
-			this.sortingField = sortingField;
-		}
-
-		public String getSortingOrder() {
-			return sortingOrder;
-		}
-
-		public void setSortingOrder(String sortingOrder) {
-			this.sortingOrder = sortingOrder;
-		}
-	}
-
 	
 	@Override
 	public String toString() {

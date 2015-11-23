@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Type;
 
-import com.hkesports.matchticker.model.basic.BasicModel;
+import com.hkesports.matchticker.model.basic.BasicAuditModel;
 
 /**
  * @author manboyu
@@ -18,7 +18,7 @@ import com.hkesports.matchticker.model.basic.BasicModel;
  */
 @Entity
 @Table(name = "code")
-public class Code extends BasicModel {
+public class Code extends BasicAuditModel {
 
 	private static final long serialVersionUID = 1L;
 

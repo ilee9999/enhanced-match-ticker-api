@@ -22,6 +22,7 @@ public class GamePicksBans extends BasicModel {
 	private ScheduleGame scheduleGame;
 	private Long teamId;
 	private Hero hero;
+	private String heroUrl;
 	private Boolean isPick;
 	private Integer order;
 
@@ -64,6 +65,15 @@ public class GamePicksBans extends BasicModel {
 		this.hero = hero;
 	}
 
+	@Column(name="hero_hrl", length = 255)
+	public String getHeroUrl() {
+		return heroUrl;
+	}
+
+	public void setHeroUrl(String heroUrl) {
+		this.heroUrl = heroUrl;
+	}
+	
 	@Column(name="is_pick", columnDefinition="TINYINT")
 	public Boolean getIsPick() {
 		return isPick;

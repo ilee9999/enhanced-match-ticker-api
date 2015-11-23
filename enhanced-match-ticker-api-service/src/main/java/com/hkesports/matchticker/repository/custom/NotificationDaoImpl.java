@@ -13,6 +13,7 @@ import com.hkesports.matchticker.vo.keepalive.SystemNotificationVo;
  * @author manboyu
  *
  */
+@Deprecated
 public class NotificationDaoImpl implements NotificationDaoCustom {
 	
 	@PersistenceContext

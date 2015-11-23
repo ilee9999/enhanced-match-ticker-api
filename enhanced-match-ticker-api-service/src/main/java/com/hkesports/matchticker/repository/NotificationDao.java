@@ -8,6 +8,7 @@ import com.hkesports.matchticker.repository.factory.GenericRepository;
  * @author manboyu
  *
  */
+@Deprecated
 public interface NotificationDao extends GenericRepository<Notification, Long>, NotificationDaoCustom {
 
 }

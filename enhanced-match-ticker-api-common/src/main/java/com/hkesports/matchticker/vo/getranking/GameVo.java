@@ -1,13 +1,13 @@
 package com.hkesports.matchticker.vo.getranking;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author manboyu
@@ -22,20 +22,30 @@ public class GameVo implements Serializable {
 	private String enGameName;
 	private String twGameName;
 	private String gameURL;
-	private List<TeamVo> Teams = new ArrayList<>(2);
+	private Boolean team; //Game.team
+	private List<ContestantsVo> contestants;
 	
 	public GameVo() {
 		
 	}
 	
-	public GameVo(Long matchID, Long gameID, String enGameName, String twGameName, String gameURL) {
+	public GameVo(Long gameID, String enGameName, String twGameName, String gameURL, Boolean team) {
+		this.gameID = gameID;
+		this.enGameName = enGameName;
+		this.twGameName = twGameName;
+		this.gameURL = gameURL;
+		this.team = team;
+	}
+	
+	public GameVo(Long matchID, Long gameID, String enGameName, String twGameName, String gameURL, Boolean team) {
 		this.matchID = matchID;
 		this.gameID = gameID;
 		this.enGameName = enGameName;
 		this.twGameName = twGameName;
 		this.gameURL = gameURL;
+		this.team = team;
 	}
-
+	
 	@JsonIgnore
 	public Long getMatchID() {
 		return matchID;
@@ -77,18 +87,27 @@ public class GameVo implements Serializable {
 		this.gameURL = gameURL;
 	}
 	
-	public List<TeamVo> getTeams() {
-		return Teams;
+	public Boolean getTeam() {
+		return team;
 	}
 
-	public void setTeams(List<TeamVo> teams) {
-		Teams = teams;
+	public void setTeam(Boolean team) {
+		this.team = team;
 	}
 	
-	public void addTeam(TeamVo vo) {
-		Teams.add(vo);
+	@JsonProperty(value="Contestants")
+	public List<ContestantsVo> getContestants() {
+		return contestants;
 	}
 
+	public void setContestants(List<ContestantsVo> contestants) {
+		this.contestants = contestants;
+	}
+	
+	public void addContestants(ContestantsVo vo) {
+		contestants.add(vo);
+	}
+	
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -97,6 +116,9 @@ public class GameVo implements Serializable {
 		.append("enGameName", getEnGameName())
 		.append("twGameName", getTwGameName())
 		.append("gameURL", getGameURL())
+		.append("team", getTeam())
 		.build();
 	}
+
+	
 }

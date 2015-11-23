@@ -1,39 +1,43 @@
 package com.hkesports.matchticker.model;
 
-import java.sql.Blob;
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import com.hkesports.matchticker.model.basic.BasicApiInfo;
+import com.hkesports.matchticker.model.basic.BasicAuditModel;
 
 @Entity
 @Table(name = "player")
-public class Player extends BasicApiInfo {
+public class Player extends BasicAuditModel {
 	
 	private static final long serialVersionUID = 1L;
 
+	private Game game;
 	private String playerName;
 	private String playerFullName;
 	private String country;
-	private Blob playerIconSmall;
-	private Blob playerIconLarge;
+	private String playerIconSmall;
+	private String playerIconLarge;
 	private String playerUrl;
 	private String photoUrl;
-	private String bio;
-	private String hometown;
 	private String facebookUrl;
 	private String twitterUrl;
-	private Short isStarter;
-	private String residency;
-	private Date contractExpiration;
+	
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "game_id", nullable = true, columnDefinition="BIGINT(20)", referencedColumnName = "id")
+	public Game getGame() {
+		return game;
+	}
+	
+	public void setGame(Game game) {
+		this.game = game;
+	}
 	
 	@Column(name="player_name", length=128)
 	public String getPlayerName() {
@@ -62,21 +66,21 @@ public class Player extends BasicApiInfo {
 		this.country = country;
 	}
 	
-	@Column(name="player_icon_small", columnDefinition="BLOB", nullable=true)
-	public Blob getPlayerIconSmall() {
+	@Column(name="player_icon_small", length = 10, nullable = true)
+	public String getPlayerIconSmall() {
 		return playerIconSmall;
 	}
 	
-	public void setPlayerIconSmall(Blob playerIconSmall) {
+	public void setPlayerIconSmall(String playerIconSmall) {
 		this.playerIconSmall = playerIconSmall;
 	}
 	
-	@Column(name="player_icon_large", columnDefinition="BLOB", nullable=true)
-	public Blob getPlayerIconLarge() {
+	@Column(name="player_icon_large", length = 10, nullable = true)
+	public String getPlayerIconLarge() {
 		return playerIconLarge;
 	}
 	
-	public void setPlayerIconLarge(Blob playerIconLarge) {
+	public void setPlayerIconLarge(String playerIconLarge) {
 		this.playerIconLarge = playerIconLarge;
 	}
 	
@@ -98,24 +102,6 @@ public class Player extends BasicApiInfo {
 		this.photoUrl = photoUrl;
 	}
 	
-	@Column(name="bio", columnDefinition="TEXT", nullable=true)
-	public String getBio() {
-		return bio;
-	}
-	
-	public void setBio(String bio) {
-		this.bio = bio;
-	}
-	
-	@Column(name="hometown", length=100, nullable=true)
-	public String getHometown() {
-		return hometown;
-	}
-	
-	public void setHometown(String hometown) {
-		this.hometown = hometown;
-	}
-	
 	@Column(name="facebook_url", length=255, nullable=true)
 	public String getFacebookUrl() {
 		return facebookUrl;
@@ -134,40 +120,10 @@ public class Player extends BasicApiInfo {
 		this.twitterUrl = twitterUrl;
 	}
 	
-	@Column(name="is_starter", columnDefinition="SMALLINT(6)", nullable=true)
-	public Short getIsStarter() {
-		return isStarter;
-	}
-	
-	public void setIsStarter(Short isStarter) {
-		this.isStarter = isStarter;
-	}
-	
-	@Column(name="residency", length=255, nullable=true)
-	public String getResidency() {
-		return residency;
-	}
-	
-	public void setResidency(String residency) {
-		this.residency = residency;
-	}
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="contract_expiration", nullable=true)
-	public Date getContractExpiration() {
-		return contractExpiration;
-	}
-	
-	public void setContractExpiration(Date contractExpiration) {
-		this.contractExpiration = contractExpiration;
-	}
-	
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 		.append("id", getId())
-		.append("apiId", getApiId())
-		.append("gameType", getGameType())
 		.append("playerName", getPlayerName())
 		.append("playerFullName", getPlayerFullName())
 		.append("country", getCountry())
@@ -175,13 +131,8 @@ public class Player extends BasicApiInfo {
 		.append("playerIconLarge", getPlayerIconLarge())
 		.append("playerUrl", getPlayerUrl())
 		.append("photoUrl", getPhotoUrl())
-		.append("bio", getBio())
-		.append("hometown", getHometown())
 		.append("facebookUrl", getFacebookUrl())
 		.append("twitterUrl", getTwitterUrl())
-		.append("isStarter", getIsStarter())
-		.append("residency", getResidency())
-		.append("contractExpiration", getContractExpiration())
 		.build();
 	}
 }

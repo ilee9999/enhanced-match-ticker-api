@@ -9,24 +9,38 @@ import com.hkesports.matchticker.utils.Const;
 import com.hkesports.matchticker.vo.BasicVo;
 
 public class GetmatchstatisticsVo extends BasicVo {
+	
 	private static final long serialVersionUID = 1L;
 
-	private Long tournamentID; //Schedule.tourament.id
-	private String tournamentName; //Schedule.tourament.tournamentName
-//	private String tournamentRound; //
-	private Date matchStartTime; //Schedule.startTime
-	private Long winnerID; //Schedule.winner
-	private Short maxGames; //Game.maxGames
-	private Boolean isLive; //Game.isLive
-	private Short isFinished; //Schedule.isFinished
-	private String matchName; //Schedule.name
+	private Long tournamentID; 			//Schedule.tournament.id
+	private String tournamentName; 		//Schedule.tournament.tournamentName
+	// private String tournamentRound; 	
+	private Date matchStartTime; 		//Schedule.startTime
+	private Long winnerID; 				//Schedule.winnerId
+	private Short maxGames; 			//Schedule.maxGames
+	private Boolean isLive; 			//Schedule.isLive
+	private String isFinished; 			//Schedule.isFinished
+	private String matchName; 			//Schedule.name
 
 	private List<TeamVo> Teams;
 	private List<GameVo> Games;
 
 	public GetmatchstatisticsVo() {}
+	
 	public GetmatchstatisticsVo(Long tournamentID, String tournamentName, Date matchStartTime,
-			Long winnerID, Short maxGames, Boolean isLive, Short isFinished, String matchName) {
+			Long winnerID, Short maxGames, Boolean isLive, String isFinished) {
+		super();
+		this.tournamentID = tournamentID;
+		this.tournamentName = tournamentName;
+		this.matchStartTime = matchStartTime;
+		this.winnerID = winnerID;
+		this.maxGames = maxGames;
+		this.isLive = isLive;
+		this.isFinished = isFinished;
+	}
+	
+	public GetmatchstatisticsVo(Long tournamentID, String tournamentName, Date matchStartTime,
+			Long winnerID, Short maxGames, Boolean isLive, String isFinished, String matchName) {
 		super();
 		this.tournamentID = tournamentID;
 		this.tournamentName = tournamentName;
@@ -87,11 +101,11 @@ public class GetmatchstatisticsVo extends BasicVo {
 		this.isLive = isLive;
 	}
 
-	public Short getIsFinished() {
+	public String getIsFinished() {
 		return isFinished;
 	}
 
-	public void setIsFinished(Short isFinished) {
+	public void setIsFinished(String isFinished) {
 		this.isFinished = isFinished;
 	}
 

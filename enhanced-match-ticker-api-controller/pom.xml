@@ -37,7 +37,7 @@
 			<id>production</id>
 			<properties>
 				<Application-Version>v.${maven.build.timestamp}</Application-Version>
-				<Application-warName>${project.artifactId}-(${Application-Version})</Application-warName>
+				<Application-warName>${project.artifactId}-${Application-Version}</Application-warName>
 				<profiles.active>production</profiles.active>
 			</properties>
 		</profile>
